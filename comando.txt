@@ -1,2 +1,13 @@
-Comando para intalar requirements.txt para instalar las librerias: 
-    pip install -r requirements.txt
+Pasos a seguir:
+
+1. Crear entorno virtual: 
+
+pip install -m venv grafica
+
+2. Activar entorno virtual:
+
+.\grafica\Scripts\activate
+
+3. Comando para instalar requirements.txt para instalar las librerias: 
+
+pip install -r requirements.txt
