@@ -84,48 +84,48 @@ class MyGraphic(QWidget):
         #btn_Trazar linea
         self.btn_trazar = QPushButton("Trazar Línea", self)
         self.btn_trazar.setGeometry(1200, 100, 120, 30)
-        self.btn_trazar.setStyleSheet("background-color: lightgray;")
+        self.btn_trazar.setStyleSheet("background-color: lightgray; color: black;")
 
         #btn_Limpiar
         self.btn_limpiar = QPushButton("Limpiar", self)
         self.btn_limpiar.setGeometry(1200, 150, 120, 30)
-        self.btn_limpiar.setStyleSheet("background-color: lightgray;")
+        self.btn_limpiar.setStyleSheet("background-color: lightgray; color: black;")
 
         #Etiqueta de la pendiente
         self.pendiente_label = QLabel("Valor de M: ", self)
         self.pendiente_label.setGeometry(1200, 250, 80, 30)
-        self.pendiente_label.setStyleSheet("background-color: lightgray;" "font-size: 13px; padding: 5px;")
+        self.pendiente_label.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 5px;")
         self.pendiente_text = QLabel(self)
         self.pendiente_text.setGeometry(1290,250,60,30)
-        self.pendiente_text.setStyleSheet("background-color: white;" "font-size: 13px; padding: 7px;")
+        self.pendiente_text.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
 
         #Etiqueta de si Xa > Xb
         self.Xa_Xb_txt = QLabel(self)
         self.Xa_Xb_txt.setGeometry(1200, 200, 120, 30)
-        self.Xa_Xb_txt.setStyleSheet("background-color: white;" "font-size: 13px; padding: 7px;")
+        self.Xa_Xb_txt.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
 
         #etiqueta de caso
         self.caso_label = QLabel("Caso", self)
         self.caso_label.setGeometry(1200, 300, 80, 30)
-        self.caso_label.setStyleSheet("background-color: lightgray;" "font-size: 13px; padding: 10px;")
+        self.caso_label.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 10px;")
         self.caso_text = QLabel(self)
         self.caso_text.setGeometry(1290, 300, 170, 30)
-        self.caso_text.setStyleSheet("background-color: white;" "font-size: 13px; padding: 5px;")
+        self.caso_text.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 5px;")
 
         #etiqueta de direccion 
         self.cumple_label = QLabel("Se cumple ", self)
         self.cumple_label.setGeometry(1200, 350, 80, 30)
-        self.cumple_label.setStyleSheet("background-color: lightgray;" "font-size: 13px; padding: 7px;")
+        self.cumple_label.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 7px;")
         self.direccion_text = QLabel(self)
         self.direccion_text.setGeometry(1290, 350, 170, 30)
-        self.direccion_text.setStyleSheet("background-color: white;" "font-size: 13px; padding: 5px;")
+        self.direccion_text.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 5px;")
 
 
         # Etiqueta de las coordenadas generadas
         self.coordenadas_label = QLabel("Coordenadas generadas en la pendiente:", self)
         self.coordenadas_label.setGeometry(950, 250, 230, 30) # x , y  , widht, hight (Ancho y altura)
         # Subrayar la etiqueta de coordenadas
-        self.coordenadas_label.setStyleSheet("background-color: lightgray;" "font-size: 12px; padding: 5px;")
+        self.coordenadas_label.setStyleSheet("background-color: lightgray; color: black; font-size: 12px; padding: 5px;")
         
         
         # Layout principal
@@ -133,7 +133,7 @@ class MyGraphic(QWidget):
 
         # Crear QLabel para mostrar las coordenadas
         self.coordenadas_text = QLabel(self)
-        self.coordenadas_text.setStyleSheet("background-color: white; font-size: 14px; padding: 15px;")
+        self.coordenadas_text.setStyleSheet("background-color: white; color: black; font-size: 14px; padding: 15px;")
         self.coordenadas_text.setWordWrap(True)  # Permite que el texto se divida en varias líneas
 
         # Crear QScrollArea para contener el QLabel y permitir desplazamiento
@@ -205,6 +205,8 @@ class MyGraphic(QWidget):
             text_y = QGraphicsTextItem(f"{i}")
             text_y.setPos(inicio_y - 3, y_pos - 5)
             self.scene.addItem(text_y)
+            text_x.setDefaultTextColor(Qt.GlobalColor.black)
+            text_y.setDefaultTextColor(Qt.GlobalColor.black)
 
 
     def calcular_pendiente(self, xa, ya, xb, yb) -> float:
