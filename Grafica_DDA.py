@@ -240,6 +240,7 @@ class MyGraphic(QWidget):
         coordenadas = []
         caso = ""
         xa_xb = ""
+        ya_yb_error = ""
         
         Xk = 0  # Initialize xk with a default value
         if pendiente == 1:  
@@ -289,11 +290,13 @@ class MyGraphic(QWidget):
             caso = "Especial M = Error"
             if ya > yb:#Si
                 xa_xb = "X = X, Y - 1"
+                ya_yb_error = "ya > yb= Si"
                 while ya >= yb: 
                     coordenadas.append(f"   [ {xa}, {ya} ]")
                     ya -= 1
             else:#No
                 xa_xb = "X = X, Y + 1"
+                ya_yb_error = "ya > yb= No"
                 while ya <= yb:
                     coordenadas.append(f"   [ {xa}, {ya} ]")
                     ya += 1
@@ -358,7 +361,7 @@ class MyGraphic(QWidget):
                     xa = (xa - (Xk))
                     ya -= 1
 
-        return coordenadas, caso, Xk, xa_xb
+        return coordenadas, caso, Xk, xa_xb, ya_yb_error
 
     def trazar_linea(self):
         
@@ -387,10 +390,12 @@ class MyGraphic(QWidget):
             # Generar y mostrar las coordenadas intermediarias
         try:
             pendiente = self.calcular_pendiente(xa, ya, xb, yb)
-            coordenadas, caso, xk, xa_xb = self.generar_coordenadas(xa, ya, xb, yb)
+            coordenadas, caso, xk, xa_xb, ya_yb_error = self.generar_coordenadas(xa, ya, xb, yb)
             direccion, xa_xb_mayor = self.determinar_caso(xa, xb)
 
             if pendiente is None:
+                self.Xa_Xb_txt.setText(ya_yb_error)
+                self.caso_xa_xb.setText(xa_xb)
                 self.pendiente_text.setText("Error")
                 self.caso_text.setText(caso)    
                 self.direccion_text.setText(self.caso_error(ya, yb))
