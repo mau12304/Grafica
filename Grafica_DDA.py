@@ -130,7 +130,7 @@ class MyGraphic(QWidget):
         self.direccion_text.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 5px;")
 
         #Etiqueta de Xk + 1
-        self.xk_mas_uno = QLabel("Xk + 1  ", self)
+        self.xk_mas_uno = QLabel("Xk + 1/M ", self)
         self.xk_mas_uno.setGeometry(1200, 390, 80, 30)
         self.xk_mas_uno.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 7px;")
         self.xk_mas_uno_txt = QLabel(self)
@@ -241,7 +241,7 @@ class MyGraphic(QWidget):
         caso = ""
         xa_xb = ""
         
-        Xk = None  # Initialize xk with a default value
+        Xk = 0  # Initialize xk with a default value
         if pendiente == 1:  
             caso = "Especial M = 1"
             if xa > xb:#Si
@@ -312,19 +312,18 @@ class MyGraphic(QWidget):
                     coordenadas.append(f"   [ {xa}, {round(ya, 4)}]")
                     xa += 1
                     ya += pendiente
-
         elif pendiente > 1: 
             caso = "Positivo cuando +M > 1"
             Xk = 1 / pendiente
-            if xa > xb : # Si
+            if xa > xb : #Si
                 xa_xb = "X - Xk+1/m, Y + 1"
-                while xa >= xb and ya <= yb:
+                while xa >= xb and ya >= yb:
                     coordenadas.append(f"   [ {round(xa, 4)}, {ya}]")
                     xa -= Xk
-                    ya += 1
+                    ya -= 1
             else: # No
-                xa_xb = "X + Xk+1/m, Y + 1"
                 while xa <= xb and ya <= yb:
+                    xa_xb = "X + Xk+1/m, Y + 1"
                     coordenadas.append(f"   [ {round(xa, 4)}, {ya}]")
                     xa += Xk
                     ya += 1
@@ -403,7 +402,7 @@ class MyGraphic(QWidget):
                 self.caso_text.setText(caso)
                 self.direccion_text.setText(direccion)
                 self.xk_mas_uno_txt.setText(str(xk))
-                self.coordenadas_text.setText("\n".join(coordenadas))
+                self.coordenadas_text.setText("   X,      Y\n" + "\n".join(coordenadas))
             else:
                 self.coordenadas_text.setText("No se encontro ningun caso")
         except ValueError:
@@ -430,7 +429,9 @@ class MyGraphic(QWidget):
         self.pendiente_text.clear()
         self.scene.clear()
         self.dibujar_grafica()
-        self.caso_text.clear()
+        self.caso_xa_xb.clear()
+        self.xk_mas_uno_txt.clear()
+        self.caso_text.clear() 
         self.Xa_Xb_txt.clear()
         self.direccion_text.clear()
         self.input_xa.clear()
