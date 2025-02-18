@@ -33,6 +33,10 @@ class MyGraphic(QWidget):
 
     def dibujar_area_grafica(self):
         # Área gráfica (Escena grafica)
+        # Título grande en la ventana
+        self.titulo = QLabel("METODO DDA", self)
+        self.titulo.setGeometry(600, 20, 300, 50)  # x, y, width, height
+        self.titulo.setStyleSheet("font-size: 24px; font-weight: bold; color: black;")
         ancho_e = 900
         altura_e = 600
         posicion_e_x = 10
@@ -104,6 +108,11 @@ class MyGraphic(QWidget):
         self.Xa_Xb_txt.setGeometry(1200, 200, 120, 30)
         self.Xa_Xb_txt.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
 
+        #Etiqueta de si Xa > Xb
+        self.caso_xa_xb = QLabel(self)
+        self.caso_xa_xb.setGeometry(1300, 200, 120, 30)
+        self.caso_xa_xb.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
+
         #etiqueta de caso
         self.caso_label = QLabel("Caso", self)
         self.caso_label.setGeometry(1200, 300, 80, 30)
@@ -119,6 +128,14 @@ class MyGraphic(QWidget):
         self.direccion_text = QLabel(self)
         self.direccion_text.setGeometry(1290, 350, 170, 30)
         self.direccion_text.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 5px;")
+
+        #Etiqueta de Xk + 1
+        self.xk_mas_uno = QLabel("Xk + 1  ", self)
+        self.xk_mas_uno.setGeometry(1200, 390, 80, 30)
+        self.xk_mas_uno.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 7px;")
+        self.xk_mas_uno_txt = QLabel(self)
+        self.xk_mas_uno_txt.setGeometry(1290, 390, 170, 30)
+        self.xk_mas_uno_txt.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 5px;")
 
 
         # Etiqueta de las coordenadas generadas
@@ -222,16 +239,20 @@ class MyGraphic(QWidget):
         pendiente: float = self.calcular_pendiente(xa, ya, xb, yb)
         coordenadas = []
         caso = ""
+        xa_xb = ""
         
+        Xk = None  # Initialize xk with a default value
         if pendiente == 1:  
-            caso = "Especial M = 1 "
+            caso = "Especial M = 1"
             if xa > xb:#Si
+                xa_xb = "X - 1 , Y - 1"
                 while xa >= xb and ya >= yb: 
                     coordenadas.append(f"   [ {xa}, {ya} ]")
                     xa -= 1
                     ya -= 1
         
             else:#No
+                xa_xb = "X + 1, Y + 1"
                 while xa <= xb and ya <= yb:
                     coordenadas.append(f"   [ {xa}, {ya} ]")
                     xa += 1
@@ -240,11 +261,13 @@ class MyGraphic(QWidget):
         elif pendiente == -1:
             caso = "Especial M = -1"
             if xa > xb:  # Si 
+                xa_xb = "X - 1, Y + 1"
                 while xa >= xb and ya <= yb:
                     coordenadas.append(f"   [ {xa}, {ya} ]")
                     xa -= 1
                     ya += 1
             else:  # No
+                xa_xb = "X + 1, Y - 1"
                 while xa <= xb and ya >= yb: 
                     coordenadas.append(f"   [ {xa}, {ya} ]")
                     xa += 1
@@ -253,20 +276,24 @@ class MyGraphic(QWidget):
         elif pendiente == 0: 
             caso = "Especial M = 0"
             if xa > xb: # Si
+                xa_xb = "X - 1, Y = Y"
                 while xa >= xb and ya == yb:
                     coordenadas.append(f"   [ {xa}, {ya} ]")
                     xa -= 1
             else: #No
+                xa_xb = "X + 1, Y = Y"
                 while xa <= xb and ya == yb:
                     coordenadas.append(f"   [ {xa}, {ya} ]")
                     xa += 1
         elif pendiente is None: 
             caso = "Especial M = Error"
             if ya > yb:#Si
+                xa_xb = "X = X, Y - 1"
                 while ya >= yb: 
                     coordenadas.append(f"   [ {xa}, {ya} ]")
                     ya -= 1
             else:#No
+                xa_xb = "X = X, Y + 1"
                 while ya <= yb:
                     coordenadas.append(f"   [ {xa}, {ya} ]")
                     ya += 1
@@ -274,13 +301,15 @@ class MyGraphic(QWidget):
         elif pendiente > 0 and pendiente < 1: 
             caso = "Positivo cuando +M < 1"
             if xa > xb: # Si 
+                xa_xb = "X - 1, Y - M"
                 while xa >= xb and ya >= yb: 
-                    coordenadas.append(f"   [ {xa}, {round(ya, 2)} ]")
+                    coordenadas.append(f"   [ {xa}, {round(ya, 4)} ]")
                     xa -= 1 
                     ya -= pendiente
             else: #NO
+                xa_xb = "X + 1, Y + M"
                 while xa <= xb and ya <= yb: 
-                    coordenadas.append(f"   [ {xa}, {round(ya, 2)}]")
+                    coordenadas.append(f"   [ {xa}, {round(ya, 4)}]")
                     xa += 1
                     ya += pendiente
 
@@ -288,43 +317,49 @@ class MyGraphic(QWidget):
             caso = "Positivo cuando +M > 1"
             Xk = 1 / pendiente
             if xa > xb : # Si
+                xa_xb = "X - Xk+1/m, Y + 1"
                 while xa >= xb and ya <= yb:
-                    coordenadas.append(f"   [ {round(xa, 2)}, {ya}]")
+                    coordenadas.append(f"   [ {round(xa, 4)}, {ya}]")
                     xa -= Xk
                     ya += 1
             else: # No
+                xa_xb = "X + Xk+1/m, Y + 1"
                 while xa <= xb and ya <= yb:
-                    coordenadas.append(f"   [ {round(xa, 2)}, {ya}]")
+                    coordenadas.append(f"   [ {round(xa, 4)}, {ya}]")
                     xa += Xk
                     ya += 1
 
         elif pendiente < 0 and pendiente > -1: 
             caso = "Negativo cuando -M < 1"
             if xa > xb: # Si
+                xa_xb = "X - 1, Y + m"
                 while xa >= xb  and ya <= yb:
-                    coordenadas.append(f"[ {xa}, {round(ya, 2)} ]")
+                    coordenadas.append(f"[ {xa}, {round(ya, 4)} ]")
                     xa -= 1
                     ya = (ya - (pendiente))
             else: #No
+                xa_xb = "X + 1, Y - m"
                 while xa <= xb and ya >= yb: 
-                    coordenadas.append(f"[ {xa}, {round(ya, 2)} ]")
+                    coordenadas.append(f"[ {xa}, {round(ya, 4)} ]")
                     xa += 1
                     ya = (ya + (pendiente))
         elif pendiente < -1:
             caso = "Negativo cuando -M > 1"
             Xk = 1 / pendiente
             if xa > xb:#Si
+                xa_xb = "X - Xk, Y + 1"
                 while xa >= xb and ya <= yb:
-                    coordenadas.append(f"[ {round(xa, 2)}, {ya} ]")
+                    coordenadas.append(f"[ {round(xa, 4)}, {ya} ]")
                     xa = (xa + (Xk))
                     ya += 1
             else: #No
+                xa_xb = "X + Xk, Y - 1"
                 while xa <= xb and ya >= yb:
-                    coordenadas.append(f"[ {round(xa, 2)}, {ya} ]")
+                    coordenadas.append(f"[ {round(xa, 4)}, {ya} ]")
                     xa = (xa - (Xk))
                     ya -= 1
 
-        return coordenadas, caso
+        return coordenadas, caso, Xk, xa_xb
 
     def trazar_linea(self):
         
@@ -353,19 +388,21 @@ class MyGraphic(QWidget):
             # Generar y mostrar las coordenadas intermediarias
         try:
             pendiente = self.calcular_pendiente(xa, ya, xb, yb)
-            coordenadas, caso = self.generar_coordenadas(xa, ya, xb, yb)
+            coordenadas, caso, xk, xa_xb = self.generar_coordenadas(xa, ya, xb, yb)
             direccion, xa_xb_mayor = self.determinar_caso(xa, xb)
 
             if pendiente is None:
                 self.pendiente_text.setText("Error")
-                self.caso_text.setText(caso)
+                self.caso_text.setText(caso)    
                 self.direccion_text.setText(self.caso_error(ya, yb))
                 self.coordenadas_text.setText("\n".join(coordenadas))
             elif coordenadas:
                 self.Xa_Xb_txt.setText(f"Xa > Xb: {xa_xb_mayor}")
+                self.caso_xa_xb.setText(xa_xb)
                 self.pendiente_text.setText(f"{pendiente}")
                 self.caso_text.setText(caso)
                 self.direccion_text.setText(direccion)
+                self.xk_mas_uno_txt.setText(str(xk))
                 self.coordenadas_text.setText("\n".join(coordenadas))
             else:
                 self.coordenadas_text.setText("No se encontro ningun caso")
@@ -393,6 +430,9 @@ class MyGraphic(QWidget):
         self.pendiente_text.clear()
         self.scene.clear()
         self.dibujar_grafica()
+        self.caso_text.clear()
+        self.Xa_Xb_txt.clear()
+        self.direccion_text.clear()
         self.input_xa.clear()
         self.input_ya.clear()
         self.input_xb.clear()
