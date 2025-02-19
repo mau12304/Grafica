@@ -110,7 +110,7 @@ class MyGraphic(QWidget):
 
         #Etiqueta de si Xa > Xb
         self.caso_xa_xb = QLabel(self)
-        self.caso_xa_xb.setGeometry(1300, 200, 120, 30)
+        self.caso_xa_xb.setGeometry(1300, 200, 140, 30)
         self.caso_xa_xb.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
 
         #etiqueta de caso
