@@ -63,15 +63,28 @@ class MyGraphic(QWidget):
 
         #Xb
         self.label_xb = QLabel("Xb:", self)
-        self.label_xb.setGeometry(930,150,60,30)
+        self.label_xb.setGeometry(930,140,60,30)
         self.input_xb = QLineEdit(self)
-        self.input_xb.setGeometry(970,150,60,30)
+        self.input_xb.setGeometry(970,140,60,30)
 
         #Yb
         self.label_yb = QLabel("Yb:", self)
-        self.label_yb.setGeometry(1050, 150, 60, 30)
+        self.label_yb.setGeometry(1050, 140, 60, 30)
         self.input_yb = QLineEdit(self)
-        self.input_yb.setGeometry(1090, 150, 60, 30)
+        self.input_yb.setGeometry(1090, 140, 60, 30)
+
+        #Xc 
+        self.label_xc = QLabel("Xc:", self)
+        self.label_xc.setGeometry(930, 180, 60, 30)
+        self.input_xc = QLineEdit(self)
+        self.input_xc.setGeometry(970, 180, 60, 30)
+        
+        #Yc 
+        self.label_yc = QLabel("Yc:", self)
+        self.label_yc.setGeometry(1050, 180, 60, 30)
+        self.input_yc = QLineEdit(self)
+        self.input_yc.setGeometry(1090, 180, 60, 30)
+
 
         #  colores para los labels
         self.label_xa.setStyleSheet("color: blue;")
@@ -84,88 +97,144 @@ class MyGraphic(QWidget):
         self.input_ya.setStyleSheet("background-color: lightgreen;")
         self.input_xb.setStyleSheet("background-color: lightcoral;")
         self.input_yb.setStyleSheet("background-color: lightcoral;")
+        self.input_xc.setStyleSheet("background-color: white;")
+        self.input_yc.setStyleSheet("background-color: white;")
 
         #btn_Trazar linea
         self.btn_trazar = QPushButton("Trazar Línea", self)
-        self.btn_trazar.setGeometry(1200, 100, 120, 30)
+        self.btn_trazar.setGeometry(1150, 140, 100, 30)
         self.btn_trazar.setStyleSheet("background-color: lightgray; color: black;")
 
         #btn_Limpiar
         self.btn_limpiar = QPushButton("Limpiar", self)
-        self.btn_limpiar.setGeometry(1200, 150, 120, 30)
+        self.btn_limpiar.setGeometry(1150, 180, 100, 30)
         self.btn_limpiar.setStyleSheet("background-color: lightgray; color: black;")
 
-        #Etiqueta de la pendiente
-        self.pendiente_label = QLabel("Valor de M: ", self)
-        self.pendiente_label.setGeometry(1200, 250, 80, 30)
-        self.pendiente_label.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 5px;")
-        self.pendiente_text = QLabel(self)
-        self.pendiente_text.setGeometry(1290,250,60,30)
-        self.pendiente_text.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
 
         #Etiqueta de si Xa > Xb
         self.Xa_Xb_txt = QLabel(self)
-        self.Xa_Xb_txt.setGeometry(1200, 200, 120, 30)
+        self.Xa_Xb_txt.setGeometry(950, 220, 120, 30)
         self.Xa_Xb_txt.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
 
         #Etiqueta de si Xa > Xb
         self.caso_xa_xb = QLabel(self)
-        self.caso_xa_xb.setGeometry(1300, 200, 140, 30)
+        self.caso_xa_xb.setGeometry(1050, 220, 140, 30)
         self.caso_xa_xb.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
+        #Etiqueta de la pendiente
+        self.btn_pendiente_AB = QLabel("M (A, B): ", self)
+        self.btn_pendiente_AB.setGeometry(1250, 65, 80, 30)
+        self.btn_pendiente_AB.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 5px;")
+        self.pendiente_AB = QLabel(self)
+        self.pendiente_AB.setGeometry(1350,65,60,30)
+        self.pendiente_AB.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
+
+        self.btn_pendiente_BC = QLabel("M (B, C): ", self)
+        self.btn_pendiente_BC.setGeometry(1250, 100, 80, 30)
+        self.btn_pendiente_BC.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 5px;")
+        self.pendiente_BC = QLabel(self)
+        self.pendiente_BC.setGeometry(1350,100,60,30)
+        self.pendiente_BC.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
+
+        self.btn_pendiente_CA = QLabel("M (C, A): ", self)
+        self.btn_pendiente_CA.setGeometry(1250, 135, 80, 30)
+        self.btn_pendiente_CA.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 5px;")
+        self.pendiente_CA = QLabel(self)
+        self.pendiente_CA.setGeometry(1350,135,60,30)
+        self.pendiente_CA.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
+
 
         #etiqueta de caso
         self.caso_label = QLabel("Caso", self)
-        self.caso_label.setGeometry(1200, 300, 80, 30)
+        self.caso_label.setGeometry(1250, 170, 80, 30)
         self.caso_label.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 10px;")
         self.caso_text = QLabel(self)
-        self.caso_text.setGeometry(1290, 300, 170, 30)
+        self.caso_text.setGeometry(1350, 170, 170, 30)
         self.caso_text.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 5px;")
 
         #etiqueta de direccion 
         self.cumple_label = QLabel("Se cumple ", self)
-        self.cumple_label.setGeometry(1200, 350, 80, 30)
+        self.cumple_label.setGeometry(1250, 220, 80, 30)
         self.cumple_label.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 7px;")
         self.direccion_text = QLabel(self)
-        self.direccion_text.setGeometry(1290, 350, 170, 30)
+        self.direccion_text.setGeometry(1350, 220, 170, 30)
         self.direccion_text.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 5px;")
 
         #Etiqueta de Xk + 1
         self.xk_mas_uno = QLabel("Xk + 1/M ", self)
-        self.xk_mas_uno.setGeometry(1200, 390, 80, 30)
+        self.xk_mas_uno.setGeometry(1250, 260, 80, 30)
         self.xk_mas_uno.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 7px;")
         self.xk_mas_uno_txt = QLabel(self)
-        self.xk_mas_uno_txt.setGeometry(1290, 390, 170, 30)
+        self.xk_mas_uno_txt.setGeometry(1350, 260, 170, 30)
         self.xk_mas_uno_txt.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 5px;")
 
 
         # Etiqueta de las coordenadas generadas
-        self.coordenadas_label = QLabel("Coordenadas generadas en la pendiente:", self)
-        self.coordenadas_label.setGeometry(950, 250, 230, 30) # x , y  , widht, hight (Ancho y altura)
-        # Subrayar la etiqueta de coordenadas
-        self.coordenadas_label.setStyleSheet("background-color: lightgray; color: black; font-size: 12px; padding: 5px;")
+        self.coordenadasAB = QLabel("A (Xa, Ya) B (Xb, Yb)", self)
+        self.coordenadasAB.setGeometry(925, 330, 120, 30) # x , y  , widht, hight (Ancho y altura)
+        self.coordenadasAB.setStyleSheet("background-color: lightgray; color: black; font-size: 12px; padding: 5px;")
+        # Etiqueta de las coordenadas generadas
+        self.coordenadasBC = QLabel("B (Xb, Yb) C (Xc, Yc)", self)
+        self.coordenadasBC.setGeometry(1130, 330, 120, 30) # x , y  , widht, hight (Ancho y altura)
+        self.coordenadasBC.setStyleSheet("background-color: lightgray; color: black; font-size: 12px; padding: 5px;")
+
+        # Etiqueta de las coordenadas generadas
+        self.coordenadasCA = QLabel("C (Xc, Yc) A (Xa, Ya)", self)
+        self.coordenadasCA.setGeometry(1340, 330, 120, 30) # x , y  , widht, hight (Ancho y altura)
+        self.coordenadasCA.setStyleSheet("background-color: lightgray; color: black; font-size: 12px; padding: 5px;")
         
         
         # Layout principal
         self.layout = QVBoxLayout()
 
         # Crear QLabel para mostrar las coordenadas
-        self.coordenadas_text = QLabel(self)
-        self.coordenadas_text.setStyleSheet("background-color: white; color: black; font-size: 14px; padding: 15px;")
-        self.coordenadas_text.setWordWrap(True)  # Permite que el texto se divida en varias líneas
+        self.coordenadanas_A_B = QLabel(self)
+        self.coordenadanas_A_B.setStyleSheet("background-color: white; color: black; font-size: 14px; padding: 15px;")
+        self.coordenadanas_A_B.setWordWrap(True)  # Permite que el texto se divida en varias líneas
+        # Crear QLabel para mostrar las coordenadas
+        self.coordenadanas_B_C = QLabel(self)
+        self.coordenadanas_B_C.setStyleSheet("background-color: white; color: black; font-size: 14px; padding: 15px;")
+        self.coordenadanas_B_C.setWordWrap(True)  # Permite que el texto se divida en varias líneas
+        # Crear QLabel para mostrar las coordenadas
+        self.coordenadanas_C_A = QLabel(self)
+        self.coordenadanas_C_A.setStyleSheet("background-color: white; color: black; font-size: 14px; padding: 15px;")
+        self.coordenadanas_C_A.setWordWrap(True)  # Permite que el texto se divida en varias líneas
 
         # Crear QScrollArea para contener el QLabel y permitir desplazamiento
-        self.scroll_area = QScrollArea()
-        self.scroll_area.setWidgetResizable(True)  # Permite que el QLabel se adapte
-        self.scroll_area.setWidget(self.coordenadas_text)  # Agregar QLabel al área de scroll
-        self.scroll_area.setFixedSize(180, 350)  # Mantiene un tamaño fijo sin expandirse
+        self.scroll_AB = QScrollArea()
+        self.scroll_AB.setWidgetResizable(True)  # Permite que el QLabel se adapte
+        self.scroll_AB.setWidget(self.coordenadanas_A_B)  # Agregar QLabel al área de scroll
+        self.scroll_AB.setFixedSize(150, 350)  # Mantiene un tamaño fijo sin expandirse
         # Agregar widgets al layout
-        self.layout.addWidget(self.scroll_area)  # Agrega el QLabel dentro del ScrollArea
-        self.layout.setContentsMargins(980, 160, 0, 0)  # Posiciona el QLabel en la ventana
+        self.layout.addWidget(self.scroll_AB)  # Agrega el QLabel dentro del ScrollArea
+        self.layout.setContentsMargins(880, 290, 0, 0)  # Posiciona el QLabel en la ventana
         self.setLayout(self.layout)
+        # Crear QScrollArea para contener el QLabel y permitir desplazamiento para B-C
+        self.scroll_BC = QScrollArea()
+        self.scroll_BC.setWidgetResizable(True)  # Permite que el QLabel se adapte
+        self.scroll_BC.setWidget(self.coordenadanas_B_C)  # Agregar QLabel al área de scroll
+        self.scroll_BC.setFixedSize(150, 350)  # Mantiene un tamaño fijo sin expandirse
+        # Agregar widgets al layout
+        self.layout.addWidget(self.scroll_BC)  # Agrega el QLabel dentro del ScrollArea
 
+        # Crear QScrollArea para contener el QLabel y permitir desplazamiento para C-A
+        self.scroll_CA = QScrollArea()
+        self.scroll_CA.setWidgetResizable(True)  # Permite que el QLabel se adapte
+        self.scroll_CA.setWidget(self.coordenadanas_C_A)  # Agregar QLabel al área de scroll
+        self.scroll_CA.setFixedSize(150, 350)  # Mantiene un tamaño fijo sin expandirse
+        # Agregar widgets al layout
+        self.layout.addWidget(self.scroll_CA)  # Agrega el QLabel dentro del ScrollArea
+
+        # Layout horizontal para las coordenadas
+        self.horizontal_layout = QHBoxLayout()
+        self.horizontal_layout.addWidget(self.scroll_AB)
+        self.horizontal_layout.addWidget(self.scroll_BC)
+        self.horizontal_layout.addWidget(self.scroll_CA)
+
+        # Agregar el layout horizontal al layout principal
+        self.layout.addLayout(self.horizontal_layout)
 
         # Conectar los botones a sus respectivas funciones
-        self.btn_trazar.clicked.connect(self.trazar_linea)
+        self.btn_trazar.clicked.connect(self.on_trazar_clicked)
         self.btn_limpiar.clicked.connect(self.limpiar_escena)
 
         # Dibujar los ejes
@@ -238,24 +307,29 @@ class MyGraphic(QWidget):
     def generar_coordenadas(self, xa, ya, xb, yb):
         pendiente: float = self.calcular_pendiente(xa, ya, xb, yb)
         coordenadas = []
+        lis_xa = []
+        lis_ya = []
         caso = ""
         xa_xb = ""
         ya_yb_error = ""
-        
         Xk = 0  # Initialize xk with a default value
         if pendiente == 1:  
             caso = "Especial M = 1"
             if xa > xb:#Si
                 xa_xb = "X - 1 , Y - 1"
                 while xa >= xb and ya >= yb: 
-                    coordenadas.append(f"   [ {xa}, {ya} ]")
+                    lis_xa.append(xa)
+                    lis_ya.append(ya)
+                    coordenadas.append(f" [ {xa}, {ya} ]")
                     xa -= 1
                     ya -= 1
         
             else:#No
                 xa_xb = "X + 1, Y + 1"
                 while xa <= xb and ya <= yb:
-                    coordenadas.append(f"   [ {xa}, {ya} ]")
+                    lis_xa.append(xa)
+                    lis_ya.append(ya)
+                    coordenadas.append(f" [ {xa}, {ya} ]")
                     xa += 1
                     ya += 1
 
@@ -264,13 +338,17 @@ class MyGraphic(QWidget):
             if xa > xb:  # Si 
                 xa_xb = "X - 1, Y + 1"
                 while xa >= xb and ya <= yb:
-                    coordenadas.append(f"   [ {xa}, {ya} ]")
+                    lis_xa.append(xa)
+                    lis_ya.append(ya)
+                    coordenadas.append(f" [{xa}, {ya}]")
                     xa -= 1
                     ya += 1
             else:  # No
                 xa_xb = "X + 1, Y - 1"
-                while xa <= xb and ya >= yb: 
-                    coordenadas.append(f"   [ {xa}, {ya} ]")
+                while xa <= xb and ya >= yb:
+                    lis_xa.append(xa)
+                    lis_ya.append(ya) 
+                    coordenadas.append(f" [ {xa}, {ya} ]")
                     xa += 1
                     ya -= 1 
 
@@ -279,26 +357,34 @@ class MyGraphic(QWidget):
             if xa > xb: # Si
                 xa_xb = "X - 1, Y = Y"
                 while xa >= xb and ya == yb:
-                    coordenadas.append(f"   [ {xa}, {ya} ]")
+                    lis_xa.append(xa)
+                    lis_ya.append(ya)
+                    coordenadas.append(f" [ {xa}, {ya} ]")
                     xa -= 1
             else: #No
                 xa_xb = "X + 1, Y = Y"
                 while xa <= xb and ya == yb:
-                    coordenadas.append(f"   [ {xa}, {ya} ]")
+                    lis_xa.append(xa)
+                    lis_ya.append(ya)
+                    coordenadas.append(f" [ {xa}, {ya} ]")
                     xa += 1
         elif pendiente is None: 
             caso = "Especial M = Error"
             if ya > yb:#Si
                 xa_xb = "X = X, Y - 1"
                 ya_yb_error = "ya > yb= Si"
-                while ya >= yb: 
-                    coordenadas.append(f"   [ {xa}, {ya} ]")
+                while ya >= yb:
+                    lis_xa.append(xa)
+                    lis_ya.append(ya)
+                    coordenadas.append(f" [ {xa}, {ya} ]")
                     ya -= 1
             else:#No
                 xa_xb = "X = X, Y + 1"
                 ya_yb_error = "ya > yb= No"
                 while ya <= yb:
-                    coordenadas.append(f"   [ {xa}, {ya} ]")
+                    lis_xa.append(xa)
+                    lis_ya.append(ya)
+                    coordenadas.append(f" [ {xa}, {ya} ]")
                     ya += 1
 
         elif pendiente > 0 and pendiente < 1: 
@@ -306,28 +392,36 @@ class MyGraphic(QWidget):
             if xa > xb: # Si 
                 xa_xb = "X - 1, Y - M"
                 while xa >= xb and ya >= yb: 
-                    coordenadas.append(f"   [ {xa}, {round(ya, 4)} ]")
+                    lis_xa.append(xa)
+                    lis_ya.append(ya)
+                    coordenadas.append(f" [ {xa}, {round(ya, 2)} ]")
                     xa -= 1 
                     ya -= pendiente
             else: #NO
                 xa_xb = "X + 1, Y + M"
-                while xa <= xb and ya <= yb: 
-                    coordenadas.append(f"   [ {xa}, {round(ya, 4)}]")
+                while xa <= xb and ya <= yb:
+                    lis_xa.append(xa)
+                    lis_ya.append(ya) 
+                    coordenadas.append(f" [ {xa}, {round(ya, 2)}]")
                     xa += 1
                     ya += pendiente
         elif pendiente > 1: 
             caso = "Positivo cuando +M > 1"
             Xk = 1 / pendiente
             if xa > xb : #Si
-                xa_xb = "X - Xk+1/m, Y + 1"
+                xa_xb = "X - Xk+1/m, Y - 1" #First prueba 
                 while xa >= xb and ya >= yb:
-                    coordenadas.append(f"   [ {round(xa, 4)}, {ya}]")
+                    lis_xa.append(xa)
+                    lis_ya.append(ya)
+                    coordenadas.append(f" [ {round(xa, 2)}, {ya}]")
                     xa -= Xk
                     ya -= 1
             else: # No
                 while xa <= xb and ya <= yb:
                     xa_xb = "X + Xk+1/m, Y + 1"
-                    coordenadas.append(f"   [ {round(xa, 4)}, {ya}]")
+                    lis_xa.append(xa)
+                    lis_ya.append(ya)
+                    coordenadas.append(f" [ {round(xa, 2)}, {ya}]")
                     xa += Xk
                     ya += 1
 
@@ -336,13 +430,17 @@ class MyGraphic(QWidget):
             if xa > xb: # Si
                 xa_xb = "X - 1, Y + m"
                 while xa >= xb  and ya <= yb:
-                    coordenadas.append(f"[ {xa}, {round(ya, 4)} ]")
+                    lis_xa.append(xa)
+                    lis_ya.append(ya)
+                    coordenadas.append(f"[ {xa}, {round(ya, 2)} ]")
                     xa -= 1
                     ya = (ya - (pendiente))
             else: #No
                 xa_xb = "X + 1, Y - m"
                 while xa <= xb and ya >= yb: 
-                    coordenadas.append(f"[ {xa}, {round(ya, 4)} ]")
+                    lis_xa.append(xa)
+                    lis_ya.append(ya)
+                    coordenadas.append(f"[ {xa}, {round(ya, 2)} ]")
                     xa += 1
                     ya = (ya + (pendiente))
         elif pendiente < -1:
@@ -351,25 +449,39 @@ class MyGraphic(QWidget):
             if xa > xb:#Si
                 xa_xb = "X - Xk, Y + 1"
                 while xa >= xb and ya <= yb:
-                    coordenadas.append(f"[ {round(xa, 4)}, {ya} ]")
+                    lis_xa.append(xa)
+                    lis_ya.append(ya)
+                    coordenadas.append(f"[ {round(xa, 2)}, {ya} ]")
                     xa = (xa + (Xk))
                     ya += 1
             else: #No
                 xa_xb = "X + Xk, Y - 1"
                 while xa <= xb and ya >= yb:
-                    coordenadas.append(f"[ {round(xa, 4)}, {ya} ]")
+                    lis_xa.append(xa)
+                    lis_ya.append(ya)
+                    coordenadas.append(f"[ {round(xa, 2)}, {ya} ]")
                     xa = (xa - (Xk))
                     ya -= 1
 
-        return coordenadas, caso, Xk, xa_xb, ya_yb_error
-
-    def trazar_linea(self):
-        
-            # Obtener las coordenadas de los puntos A y B
+        return coordenadas, caso, Xk, xa_xb, ya_yb_error, lis_xa, lis_ya
+    def on_trazar_clicked(self):
+        try:
             xa = int(self.input_xa.text())
             ya = int(self.input_ya.text())
-            xb = int(self.input_xb.text()) 
+            xb = int(self.input_xb.text())
             yb = int(self.input_yb.text())
+            xc = int(self.input_xc.text())
+            yc = int(self.input_yc.text())
+            self.trazar_linea(xb, yb, xc, yc)
+            self.trazar_linea(xc, yc, xa, ya)
+            self.trazar_linea(xa, ya, xb, yb)
+            self.rellenar_triangulo(xa, ya, xb, yb, xc, yc)
+            self.caso_coordenadas(xa, ya, xb, yb, xc, yc)
+        except ValueError:
+            self.coordenadanas_A_B.setText("Error: Ingresa valores en el formato")
+
+    def trazar_linea(self, xa, ya, xb, yb):
+           
             # Convertir coordenadas de usuario a coordenadas de escena
             ancho, altura = 800, 500
             margen = 50
@@ -384,34 +496,64 @@ class MyGraphic(QWidget):
             # Dibujar la línea entre A y B
             line_pen = QPen(Qt.GlobalColor.red, 2, Qt.PenStyle.DashLine)  
             self.scene.addLine(ax_scene, ay_scene, bx_scene, by_scene, line_pen)
-            self.caso_coordenadas(xa, ya, xb, yb)
+    
+    def rellenar_triangulo(self, l_xa, l_ya, l_xb, l_yb, l_xc, l_yc):
+        list_xa, list_ya =  self.generar_coordenadas(l_xa,l_ya, l_xb, l_yb)[5:7]
+        ancho, altura = 800, 500
+        margen = 50
+        centro_x = margen + ancho / 2
+        centro_y = margen + altura / 2
 
-    def caso_coordenadas(self, xa, ya, xb, yb):
+        # Dibujar la línea entre A y B
+        line_pen = QPen(Qt.GlobalColor.darkRed, 2)  
+        for xa, ya in zip(list_xa, list_ya):
+            ax_scene = centro_x + xa * (ancho / 1000)
+            ay_scene = centro_y - ya * (altura / 1000)
+            bx_scene = centro_x + l_xc * (ancho / 1000)
+            by_scene = centro_y - l_yc * (altura / 1000)
+            self.scene.addLine(ax_scene, ay_scene, bx_scene, by_scene, line_pen)
+
+    def caso_coordenadas(self, xa, ya, xb, yb, xc, yc):
             # Generar y mostrar las coordenadas intermediarias
         try:
-            pendiente = self.calcular_pendiente(xa, ya, xb, yb)
-            coordenadas, caso, xk, xa_xb, ya_yb_error = self.generar_coordenadas(xa, ya, xb, yb)
-            direccion, xa_xb_mayor = self.determinar_caso(xa, xb)
+            pendiente_AB = self.calcular_pendiente(xa, ya, xb, yb)
+            pendiente_BC = self.calcular_pendiente(xb, yb, xc, yc)
+            pendiente_CA = self.calcular_pendiente(xc, yc, xa, ya)
 
-            if pendiente is None:
+            direccion, xa_xb_mayor = self.determinar_caso(xa, xb)
+            coordenadas_A_B, caso, xk, xa_xb, ya_yb_error, lis_xa, lis_ya = self.generar_coordenadas(xa, ya, xb, yb)
+            coordenadas_B_C = self.generar_coordenadas(xb, yb, xc, yc)[0]
+            coordenadas_C_A = self.generar_coordenadas(xc, yc, xa, ya)[0]
+            
+
+            if pendiente_AB is None:
                 self.Xa_Xb_txt.setText(ya_yb_error)
                 self.caso_xa_xb.setText(xa_xb)
-                self.pendiente_text.setText("Error")
+                self.pendiente_AB.setText("Error")
                 self.caso_text.setText(caso)    
                 self.direccion_text.setText(self.caso_error(ya, yb))
-                self.coordenadas_text.setText("\n".join(coordenadas))
-            elif coordenadas:
+                self.pendiente_AB.setText(f"{pendiente_AB}")
+                self.pendiente_BC.setText(f"{pendiente_BC}")
+                self.pendiente_CA.setText(f"{pendiente_CA}")
+                self.coordenadanas_A_B.setText("   X,     Y\n" + "\n".join(coordenadas_A_B))
+                self.coordenadanas_B_C.setText("   X,     Y\n" + "\n".join(coordenadas_B_C))
+                self.coordenadanas_C_A.setText("   X,     Y\n" + "\n".join(coordenadas_C_A))
+            elif coordenadas_A_B:
                 self.Xa_Xb_txt.setText(f"Xa > Xb: {xa_xb_mayor}")
                 self.caso_xa_xb.setText(xa_xb)
-                self.pendiente_text.setText(f"{pendiente}")
+                self.pendiente_AB.setText(f"{pendiente_AB}")
+                self.pendiente_BC.setText(f"{pendiente_BC}")
+                self.pendiente_CA.setText(f"{pendiente_CA}")
                 self.caso_text.setText(caso)
                 self.direccion_text.setText(direccion)
                 self.xk_mas_uno_txt.setText(str(xk))
-                self.coordenadas_text.setText("   X,      Y\n" + "\n".join(coordenadas))
+                self.coordenadanas_A_B.setText("   X,     Y\n" + "\n".join(coordenadas_A_B))
+                self.coordenadanas_B_C.setText("   X,     Y\n" + "\n".join(coordenadas_B_C))
+                self.coordenadanas_C_A.setText("   X,     Y\n" + "\n".join(coordenadas_C_A))
             else:
-                self.coordenadas_text.setText("No se encontro ningun caso")
+                self.coordenadanas_A_B.setText("No se encontro ningun caso")
         except ValueError:
-            self.coordenadas_text.setText("Error: Ingresa valores en el formato")
+            self.coordenadanas_A_B.setText("Error: Ingresa valores en el formato")
 
     def determinar_caso(self, xa, xb):
         direccion = ""
@@ -431,9 +573,13 @@ class MyGraphic(QWidget):
     
         
     def limpiar_escena(self):
-        self.pendiente_text.clear()
+        self.pendiente_AB.clear()
         self.scene.clear()
         self.dibujar_grafica()
+        self.coordenadanas_B_C.clear()
+        self.coordenadanas_C_A.clear()
+        self.input_xc.clear()
+        self.input_yc.clear()
         self.caso_xa_xb.clear()
         self.xk_mas_uno_txt.clear()
         self.caso_text.clear() 
@@ -443,7 +589,7 @@ class MyGraphic(QWidget):
         self.input_ya.clear()
         self.input_xb.clear()
         self.input_yb.clear()
-        self.coordenadas_text.clear()
+        self.coordenadanas_A_B.clear()
 
 
 
