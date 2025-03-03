@@ -208,21 +208,20 @@ class MyGraphic(QWidget):
         self.layout.addWidget(self.scroll_AB)  # Agrega el QLabel dentro del ScrollArea
         self.layout.setContentsMargins(880, 290, 0, 0)  # Posiciona el QLabel en la ventana
         self.setLayout(self.layout)
-        # Crear QScrollArea para contener el QLabel y permitir desplazamiento para B-C
-        self.scroll_BC = QScrollArea()
-        self.scroll_BC.setWidgetResizable(True)  # Permite que el QLabel se adapte
-        self.scroll_BC.setWidget(self.coordenadanas_B_C)  # Agregar QLabel al área de scroll
-        self.scroll_BC.setFixedSize(150, 350)  # Mantiene un tamaño fijo sin expandirse
-        # Agregar widgets al layout
-        self.layout.addWidget(self.scroll_BC)  # Agrega el QLabel dentro del ScrollArea
 
-        # Crear QScrollArea para contener el QLabel y permitir desplazamiento para C-A
+        self.scroll_BC = QScrollArea()
+        self.scroll_BC.setWidgetResizable(True)  
+        self.scroll_BC.setWidget(self.coordenadanas_B_C)  
+        self.scroll_BC.setFixedSize(150, 350)  
+
+        self.layout.addWidget(self.scroll_BC)  
+
         self.scroll_CA = QScrollArea()
-        self.scroll_CA.setWidgetResizable(True)  # Permite que el QLabel se adapte
-        self.scroll_CA.setWidget(self.coordenadanas_C_A)  # Agregar QLabel al área de scroll
-        self.scroll_CA.setFixedSize(150, 350)  # Mantiene un tamaño fijo sin expandirse
-        # Agregar widgets al layout
-        self.layout.addWidget(self.scroll_CA)  # Agrega el QLabel dentro del ScrollArea
+        self.scroll_CA.setWidgetResizable(True)  
+        self.scroll_CA.setWidget(self.coordenadanas_C_A)  
+        self.scroll_CA.setFixedSize(150, 350)  
+
+        self.layout.addWidget(self.scroll_CA)  
 
         # Layout horizontal para las coordenadas
         self.horizontal_layout = QHBoxLayout()
@@ -257,7 +256,7 @@ class MyGraphic(QWidget):
 
         # Dibujar eje X
         inicio_x, fin_x = 50, 850  # Posición inicial y final en X
-        altura_x = 300  # Altura en la que se traza el eje X
+        altura_x = 300  # Altura qen la que se traza el eje X
         self.scene.addLine(inicio_x, altura_x, fin_x, altura_x, axis_pen)
 
         # Dibujar eje Y
@@ -294,6 +293,114 @@ class MyGraphic(QWidget):
             text_x.setDefaultTextColor(Qt.GlobalColor.black)
             text_y.setDefaultTextColor(Qt.GlobalColor.black)
 
+    def on_trazar_clicked(self):
+        try:
+            xa = int(self.input_xa.text())
+            ya = int(self.input_ya.text())
+            xb = int(self.input_xb.text())
+            yb = int(self.input_yb.text())
+            xc = int(self.input_xc.text())
+            yc = int(self.input_yc.text())
+            self.trazar_linea(xb, yb, xc, yc)
+            self.trazar_linea(xc, yc, xa, ya)
+            self.trazar_linea(xa, ya, xb, yb)
+            self.rellenar_triangulo(xa, ya, xb, yb, xc, yc)
+            self.caso_coordenadas(xa, ya, xb, yb, xc, yc)
+        except ValueError:
+            self.coordenadanas_A_B.setText("Error: Ingresa valores en el formato")
+    
+    
+    def trazar_linea(self, xa, ya, xb, yb):
+           
+            # Convertir coordenadas de usuario a coordenadas de escena
+            ancho, altura = 800, 500
+            margen = 50
+            centro_x = margen + ancho / 2
+            centro_y = margen + altura / 2
+
+            ax_scene = centro_x + xa * (ancho / 1000)
+            ay_scene = centro_y - ya * (altura / 1000)
+            bx_scene = centro_x + xb * (ancho / 1000)
+            by_scene = centro_y - yb * (altura / 1000)
+
+            # Dibujar la línea entre A y B
+            line_pen = QPen(Qt.GlobalColor.red, 2, Qt.PenStyle.DashLine)  
+            self.scene.addLine(ax_scene, ay_scene, bx_scene, by_scene, line_pen)
+    
+    def rellenar_triangulo(self, l_xa, l_ya, l_xb, l_yb, l_xc, l_yc):
+        list_xa, list_ya =  self.generar_coordenadas(l_xa,l_ya, l_xb, l_yb)[5:7]
+        ancho, altura = 800, 500
+        margen = 50
+        centro_x = margen + ancho / 2
+        centro_y = margen + altura / 2
+
+        # Dibujar la línea entre A y B
+        line_pen = QPen(Qt.GlobalColor.darkRed, 2)  
+        for xa, ya in zip(list_xa, list_ya):
+            ax_scene = centro_x + xa * (ancho / 1000)
+            ay_scene = centro_y - ya * (altura / 1000)
+            bx_scene = centro_x + l_xc * (ancho / 1000)
+            by_scene = centro_y - l_yc * (altura / 1000)
+            self.scene.addLine(ax_scene, ay_scene, bx_scene, by_scene, line_pen)
+    
+    def caso_coordenadas(self, xa, ya, xb, yb, xc, yc):
+            # Generar y mostrar las coordenadas intermediarias
+        try:
+            pendiente_AB = self.calcular_pendiente(xa, ya, xb, yb)
+            pendiente_BC = self.calcular_pendiente(xb, yb, xc, yc)
+            pendiente_CA = self.calcular_pendiente(xc, yc, xa, ya)
+
+            direccion, xa_xb_mayor = self.determinar_caso(xa, xb)
+            coordenadas_A_B, caso, xk, xa_xb, ya_yb_error, lis_xa, lis_ya = self.generar_coordenadas(xa, ya, xb, yb)
+            coordenadas_B_C = self.generar_coordenadas(xb, yb, xc, yc)[0]
+            coordenadas_C_A = self.generar_coordenadas(xc, yc, xa, ya)[0]
+            
+
+            if pendiente_AB is None:
+                self.Xa_Xb_txt.setText(ya_yb_error)
+                self.caso_xa_xb.setText(xa_xb)
+                self.pendiente_AB.setText("Error")
+                self.caso_text.setText(caso)    
+                self.direccion_text.setText(self.caso_error(ya, yb))
+                self.pendiente_AB.setText(f"{pendiente_AB}")
+                self.pendiente_BC.setText(f"{pendiente_BC}")
+                self.pendiente_CA.setText(f"{pendiente_CA}")
+                self.coordenadanas_A_B.setText("   X,     Y\n" + "\n".join(coordenadas_A_B))
+                self.coordenadanas_B_C.setText("   X,     Y\n" + "\n".join(coordenadas_B_C))
+                self.coordenadanas_C_A.setText("   X,     Y\n" + "\n".join(coordenadas_C_A))
+            elif coordenadas_A_B:
+                self.Xa_Xb_txt.setText(f"Xa > Xb: {xa_xb_mayor}")
+                self.caso_xa_xb.setText(xa_xb)
+                self.pendiente_AB.setText(f"{pendiente_AB}")
+                self.pendiente_BC.setText(f"{pendiente_BC}")
+                self.pendiente_CA.setText(f"{pendiente_CA}")
+                self.caso_text.setText(caso)
+                self.direccion_text.setText(direccion)
+                self.xk_mas_uno_txt.setText(str(xk))
+                self.coordenadanas_A_B.setText("   X,     Y\n" + "\n".join(coordenadas_A_B))
+                self.coordenadanas_B_C.setText("   X,     Y\n" + "\n".join(coordenadas_B_C))
+                self.coordenadanas_C_A.setText("   X,     Y\n" + "\n".join(coordenadas_C_A))
+            else:
+                self.coordenadanas_A_B.setText("No se encontro ningun caso")
+        except ValueError:
+            self.coordenadanas_A_B.setText("Error: Ingresa valores en el formato")
+    
+    def determinar_caso(self, xa, xb):
+        direccion = ""
+        s_mayor = ""
+        if xa > xb:
+            direccion = "der --> izq, abajo | arrb" 
+            s_mayor = "Si"
+        else:
+            direccion = "izq --> der, arrb | abajo"
+            s_mayor = "No"
+        return direccion, s_mayor
+    
+    def caso_error(self, ya, yb):
+        if ya > yb:
+            return "Arrib | abajo"
+        else:
+            return "Abajo | Arriba"
 
     def calcular_pendiente(self, xa, ya, xb, yb) -> float:
         try:
@@ -464,113 +571,6 @@ class MyGraphic(QWidget):
                     ya -= 1
 
         return coordenadas, caso, Xk, xa_xb, ya_yb_error, lis_xa, lis_ya
-    def on_trazar_clicked(self):
-        try:
-            xa = int(self.input_xa.text())
-            ya = int(self.input_ya.text())
-            xb = int(self.input_xb.text())
-            yb = int(self.input_yb.text())
-            xc = int(self.input_xc.text())
-            yc = int(self.input_yc.text())
-            self.trazar_linea(xb, yb, xc, yc)
-            self.trazar_linea(xc, yc, xa, ya)
-            self.trazar_linea(xa, ya, xb, yb)
-            self.rellenar_triangulo(xa, ya, xb, yb, xc, yc)
-            self.caso_coordenadas(xa, ya, xb, yb, xc, yc)
-        except ValueError:
-            self.coordenadanas_A_B.setText("Error: Ingresa valores en el formato")
-
-    def trazar_linea(self, xa, ya, xb, yb):
-           
-            # Convertir coordenadas de usuario a coordenadas de escena
-            ancho, altura = 800, 500
-            margen = 50
-            centro_x = margen + ancho / 2
-            centro_y = margen + altura / 2
-
-            ax_scene = centro_x + xa * (ancho / 1000)
-            ay_scene = centro_y - ya * (altura / 1000)
-            bx_scene = centro_x + xb * (ancho / 1000)
-            by_scene = centro_y - yb * (altura / 1000)
-
-            # Dibujar la línea entre A y B
-            line_pen = QPen(Qt.GlobalColor.red, 2, Qt.PenStyle.DashLine)  
-            self.scene.addLine(ax_scene, ay_scene, bx_scene, by_scene, line_pen)
-    
-    def rellenar_triangulo(self, l_xa, l_ya, l_xb, l_yb, l_xc, l_yc):
-        list_xa, list_ya =  self.generar_coordenadas(l_xa,l_ya, l_xb, l_yb)[5:7]
-        ancho, altura = 800, 500
-        margen = 50
-        centro_x = margen + ancho / 2
-        centro_y = margen + altura / 2
-
-        # Dibujar la línea entre A y B
-        line_pen = QPen(Qt.GlobalColor.darkRed, 2)  
-        for xa, ya in zip(list_xa, list_ya):
-            ax_scene = centro_x + xa * (ancho / 1000)
-            ay_scene = centro_y - ya * (altura / 1000)
-            bx_scene = centro_x + l_xc * (ancho / 1000)
-            by_scene = centro_y - l_yc * (altura / 1000)
-            self.scene.addLine(ax_scene, ay_scene, bx_scene, by_scene, line_pen)
-
-    def caso_coordenadas(self, xa, ya, xb, yb, xc, yc):
-            # Generar y mostrar las coordenadas intermediarias
-        try:
-            pendiente_AB = self.calcular_pendiente(xa, ya, xb, yb)
-            pendiente_BC = self.calcular_pendiente(xb, yb, xc, yc)
-            pendiente_CA = self.calcular_pendiente(xc, yc, xa, ya)
-
-            direccion, xa_xb_mayor = self.determinar_caso(xa, xb)
-            coordenadas_A_B, caso, xk, xa_xb, ya_yb_error, lis_xa, lis_ya = self.generar_coordenadas(xa, ya, xb, yb)
-            coordenadas_B_C = self.generar_coordenadas(xb, yb, xc, yc)[0]
-            coordenadas_C_A = self.generar_coordenadas(xc, yc, xa, ya)[0]
-            
-
-            if pendiente_AB is None:
-                self.Xa_Xb_txt.setText(ya_yb_error)
-                self.caso_xa_xb.setText(xa_xb)
-                self.pendiente_AB.setText("Error")
-                self.caso_text.setText(caso)    
-                self.direccion_text.setText(self.caso_error(ya, yb))
-                self.pendiente_AB.setText(f"{pendiente_AB}")
-                self.pendiente_BC.setText(f"{pendiente_BC}")
-                self.pendiente_CA.setText(f"{pendiente_CA}")
-                self.coordenadanas_A_B.setText("   X,     Y\n" + "\n".join(coordenadas_A_B))
-                self.coordenadanas_B_C.setText("   X,     Y\n" + "\n".join(coordenadas_B_C))
-                self.coordenadanas_C_A.setText("   X,     Y\n" + "\n".join(coordenadas_C_A))
-            elif coordenadas_A_B:
-                self.Xa_Xb_txt.setText(f"Xa > Xb: {xa_xb_mayor}")
-                self.caso_xa_xb.setText(xa_xb)
-                self.pendiente_AB.setText(f"{pendiente_AB}")
-                self.pendiente_BC.setText(f"{pendiente_BC}")
-                self.pendiente_CA.setText(f"{pendiente_CA}")
-                self.caso_text.setText(caso)
-                self.direccion_text.setText(direccion)
-                self.xk_mas_uno_txt.setText(str(xk))
-                self.coordenadanas_A_B.setText("   X,     Y\n" + "\n".join(coordenadas_A_B))
-                self.coordenadanas_B_C.setText("   X,     Y\n" + "\n".join(coordenadas_B_C))
-                self.coordenadanas_C_A.setText("   X,     Y\n" + "\n".join(coordenadas_C_A))
-            else:
-                self.coordenadanas_A_B.setText("No se encontro ningun caso")
-        except ValueError:
-            self.coordenadanas_A_B.setText("Error: Ingresa valores en el formato")
-
-    def determinar_caso(self, xa, xb):
-        direccion = ""
-        s_mayor = ""
-        if xa > xb:
-            direccion = "der --> izq, abajo | arrb" 
-            s_mayor = "Si"
-        else:
-            direccion = "izq --> der, arrb | abajo"
-            s_mayor = "No"
-        return direccion, s_mayor
-    def caso_error(self, ya, yb):
-        if ya > yb:
-            return "Arrib | abajo"
-        else:
-            return "Abajo | Arriba"
-    
         
     def limpiar_escena(self):
         self.pendiente_AB.clear()
@@ -578,6 +578,8 @@ class MyGraphic(QWidget):
         self.dibujar_grafica()
         self.coordenadanas_B_C.clear()
         self.coordenadanas_C_A.clear()
+        self.pendiente_BC.clear()
+        self.pendiente_CA.clear()
         self.input_xc.clear()
         self.input_yc.clear()
         self.caso_xa_xb.clear()
@@ -590,9 +592,6 @@ class MyGraphic(QWidget):
         self.input_xb.clear()
         self.input_yb.clear()
         self.coordenadanas_A_B.clear()
-
-
-
 
 
 if __name__ == "__main__":
