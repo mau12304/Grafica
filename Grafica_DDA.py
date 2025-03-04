@@ -305,7 +305,7 @@ class MyGraphic(QWidget):
             self.trazar_linea(xc, yc, xa, ya)
             self.trazar_linea(xa, ya, xb, yb)
             self.rellenar_triangulo(xa, ya, xb, yb, xc, yc)
-            self.caso_coordenadas(xa, ya, xb, yb, xc, yc)
+            self.print_coordenadas(xa, ya, xb, yb, xc, yc)
         except ValueError:
             self.coordenadanas_A_B.setText("Error: Ingresa valores en el formato")
     
@@ -343,7 +343,7 @@ class MyGraphic(QWidget):
             by_scene = centro_y - l_yc * (altura / 1000)
             self.scene.addLine(ax_scene, ay_scene, bx_scene, by_scene, line_pen)
     
-    def caso_coordenadas(self, xa, ya, xb, yb, xc, yc):
+    def print_coordenadas(self, xa, ya, xb, yb, xc, yc):
             # Generar y mostrar las coordenadas intermediarias
         try:
             pendiente_AB = self.calcular_pendiente(xa, ya, xb, yb)
@@ -409,7 +409,6 @@ class MyGraphic(QWidget):
             m_pendiente = None 
 
         return m_pendiente
-
 
     def generar_coordenadas(self, xa, ya, xb, yb):
         pendiente: float = self.calcular_pendiente(xa, ya, xb, yb)
