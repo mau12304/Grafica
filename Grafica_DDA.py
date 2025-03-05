@@ -346,7 +346,7 @@ class MyGraphic(QWidget):
             by_scene = centro_y - yb * (altura / 1000)
 
             # Dibujar la línea entre A y B
-            line_pen = QPen(Qt.GlobalColor.red, 2, Qt.PenStyle.DashLine)  
+            line_pen = QPen(Qt.GlobalColor.red, 2)  
             self.scene.addLine(ax_scene, ay_scene, bx_scene, by_scene, line_pen)
     
     def rellenar_triangulo(self, l_xa, l_ya, l_xb, l_yb, l_xc, l_yc):
@@ -621,6 +621,8 @@ class MyGraphic(QWidget):
         self.xk_mas_uno_txt.clear()
         self.caso_text.clear() 
         self.Xa_Xb_txt.clear()
+        self.Xb_Xc_txt.clear()
+        self.Xc_Xa_txt.clear()
         self.direccion_text.clear()
         self.input_xa.clear()
         self.input_ya.clear()
