@@ -101,70 +101,92 @@ class MyGraphic(QWidget):
         self.input_yc.setStyleSheet("background-color: white;")
 
         #btn_Trazar linea
-        self.btn_trazar = QPushButton("Trazar Línea", self)
-        self.btn_trazar.setGeometry(1150, 140, 100, 30)
+        self.btn_trazar = QPushButton("Trazar Triangulo", self)
+        self.btn_trazar.setGeometry(1150, 100, 100, 30)
         self.btn_trazar.setStyleSheet("background-color: lightgray; color: black;")
 
         #btn_Limpiar
         self.btn_limpiar = QPushButton("Limpiar", self)
-        self.btn_limpiar.setGeometry(1150, 180, 100, 30)
+        self.btn_limpiar.setGeometry(1150, 140, 100, 30)
         self.btn_limpiar.setStyleSheet("background-color: lightgray; color: black;")
 
 
         #Etiqueta de si Xa > Xb
         self.Xa_Xb_txt = QLabel(self)
-        self.Xa_Xb_txt.setGeometry(950, 220, 120, 30)
+        self.Xa_Xb_txt.setGeometry(910, 220, 140, 30)
         self.Xa_Xb_txt.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
 
         #Etiqueta de si Xa > Xb
-        self.caso_xa_xb = QLabel(self)
-        self.caso_xa_xb.setGeometry(1050, 220, 140, 30)
-        self.caso_xa_xb.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
+        self.caso_A_B = QLabel(self)
+        self.caso_A_B.setGeometry(1050, 220, 140, 30)
+        self.caso_A_B.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
+
+        #Etiqueta de si Xb > xc
+        self.Xb_Xc_txt = QLabel(self)
+        self.Xb_Xc_txt.setGeometry(910, 255, 140, 30)
+        self.Xb_Xc_txt.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
+
+        #Etiqueta de si Xb > Xc
+        self.caso_B_C = QLabel(self)
+        self.caso_B_C.setGeometry(1050, 255, 140, 30)
+        self.caso_B_C.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
+
+        #Etiqueta de si Xa > Xb
+        self.Xc_Xa_txt = QLabel(self)
+        self.Xc_Xa_txt.setGeometry(910, 290, 140, 30)
+        self.Xc_Xa_txt.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
+
+        #Etiqueta de si Xa > Xb
+        self.caso_C_A = QLabel(self)
+        self.caso_C_A.setGeometry(1050, 290, 140, 30)
+        self.caso_C_A.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
+
+
         #Etiqueta de la pendiente
         self.btn_pendiente_AB = QLabel("M (A, B): ", self)
-        self.btn_pendiente_AB.setGeometry(1250, 65, 80, 30)
+        self.btn_pendiente_AB.setGeometry(1250, 95, 80, 30)
         self.btn_pendiente_AB.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 5px;")
         self.pendiente_AB = QLabel(self)
-        self.pendiente_AB.setGeometry(1350,65,60,30)
+        self.pendiente_AB.setGeometry(1350,95,60,30)
         self.pendiente_AB.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
 
         self.btn_pendiente_BC = QLabel("M (B, C): ", self)
-        self.btn_pendiente_BC.setGeometry(1250, 100, 80, 30)
+        self.btn_pendiente_BC.setGeometry(1250, 127, 80, 30)
         self.btn_pendiente_BC.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 5px;")
         self.pendiente_BC = QLabel(self)
-        self.pendiente_BC.setGeometry(1350,100,60,30)
+        self.pendiente_BC.setGeometry(1350,127,60,30)
         self.pendiente_BC.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
 
         self.btn_pendiente_CA = QLabel("M (C, A): ", self)
-        self.btn_pendiente_CA.setGeometry(1250, 135, 80, 30)
+        self.btn_pendiente_CA.setGeometry(1250, 160, 80, 30)
         self.btn_pendiente_CA.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 5px;")
         self.pendiente_CA = QLabel(self)
-        self.pendiente_CA.setGeometry(1350,135,60,30)
+        self.pendiente_CA.setGeometry(1350,160,60,30)
         self.pendiente_CA.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 7px;")
 
 
         #etiqueta de caso
         self.caso_label = QLabel("Caso", self)
-        self.caso_label.setGeometry(1250, 170, 80, 30)
+        self.caso_label.setGeometry(1250, 215, 80, 30)
         self.caso_label.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 10px;")
         self.caso_text = QLabel(self)
-        self.caso_text.setGeometry(1350, 170, 170, 30)
+        self.caso_text.setGeometry(1350, 215, 170, 30)
         self.caso_text.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 5px;")
 
         #etiqueta de direccion 
         self.cumple_label = QLabel("Se cumple ", self)
-        self.cumple_label.setGeometry(1250, 220, 80, 30)
+        self.cumple_label.setGeometry(1250, 247, 80, 30)
         self.cumple_label.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 7px;")
         self.direccion_text = QLabel(self)
-        self.direccion_text.setGeometry(1350, 220, 170, 30)
+        self.direccion_text.setGeometry(1350, 247, 170, 30)
         self.direccion_text.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 5px;")
 
         #Etiqueta de Xk + 1
         self.xk_mas_uno = QLabel("Xk + 1/M ", self)
-        self.xk_mas_uno.setGeometry(1250, 260, 80, 30)
+        self.xk_mas_uno.setGeometry(1250, 280, 80, 30)
         self.xk_mas_uno.setStyleSheet("background-color: lightgray; color: black; font-size: 13px; padding: 7px;")
         self.xk_mas_uno_txt = QLabel(self)
-        self.xk_mas_uno_txt.setGeometry(1350, 260, 170, 30)
+        self.xk_mas_uno_txt.setGeometry(1350, 280, 170, 30)
         self.xk_mas_uno_txt.setStyleSheet("background-color: white; color: black; font-size: 13px; padding: 5px;")
 
 
@@ -352,13 +374,17 @@ class MyGraphic(QWidget):
 
             direccion, xa_xb_mayor = self.determinar_caso(xa, xb)
             coordenadas_A_B, caso, xk, xa_xb, ya_yb_error, lis_xa, lis_ya = self.generar_coordenadas(xa, ya, xb, yb)
+            xb_xc = self.generar_coordenadas(xb, yb, xc, yc)[3]
+            xc_xa = self.generar_coordenadas(xb, yb, xc, yc)[3]
             coordenadas_B_C = self.generar_coordenadas(xb, yb, xc, yc)[0]
             coordenadas_C_A = self.generar_coordenadas(xc, yc, xa, ya)[0]
             
 
             if pendiente_AB is None:
-                self.Xa_Xb_txt.setText(ya_yb_error)
-                self.caso_xa_xb.setText(xa_xb)
+                self.Xa_Xb_txt.setText(f"(A,B):{ya_yb_error}")
+                self.caso_A_B.setText(xa_xb)
+                self.caso_B_C.setText(xb_xc)
+                self.caso_C_A.setText(xc_xa)
                 self.pendiente_AB.setText("Error")
                 self.caso_text.setText(caso)    
                 self.direccion_text.setText(self.caso_error(ya, yb))
@@ -369,8 +395,12 @@ class MyGraphic(QWidget):
                 self.coordenadanas_B_C.setText("   X,     Y\n" + "\n".join(coordenadas_B_C))
                 self.coordenadanas_C_A.setText("   X,     Y\n" + "\n".join(coordenadas_C_A))
             elif coordenadas_A_B:
-                self.Xa_Xb_txt.setText(f"Xa > Xb: {xa_xb_mayor}")
-                self.caso_xa_xb.setText(xa_xb)
+                self.Xa_Xb_txt.setText(f"(A,B) Xa > Xb: {xa_xb_mayor}")
+                self.Xb_Xc_txt.setText(f"(B,C)Xb > Xc: {self.determinar_caso(xb, xc)[1]}")
+                self.Xc_Xa_txt.setText(f"(C,A)Xc > Xa: {self.determinar_caso(xc, xa)[1]}")
+                self.caso_A_B.setText(xa_xb)
+                self.caso_B_C.setText(xb_xc)
+                self.caso_C_A.setText(xc_xa)
                 self.pendiente_AB.setText(f"{pendiente_AB}")
                 self.pendiente_BC.setText(f"{pendiente_BC}")
                 self.pendiente_CA.setText(f"{pendiente_CA}")
@@ -581,7 +611,7 @@ class MyGraphic(QWidget):
         self.pendiente_CA.clear()
         self.input_xc.clear()
         self.input_yc.clear()
-        self.caso_xa_xb.clear()
+        self.caso_A_B.clear()
         self.xk_mas_uno_txt.clear()
         self.caso_text.clear() 
         self.Xa_Xb_txt.clear()
