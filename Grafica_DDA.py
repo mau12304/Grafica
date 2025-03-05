@@ -382,6 +382,8 @@ class MyGraphic(QWidget):
 
             if pendiente_AB is None:
                 self.Xa_Xb_txt.setText(f"(A,B):{ya_yb_error}")
+                self.Xb_Xc_txt.setText(f"(B,C)Xb > Xc: {self.determinar_caso(xb, xc)[1]}")
+                self.Xc_Xa_txt.setText(f"(C,A)Xc > Xa: {self.determinar_caso(xc, xa)[1]}")
                 self.caso_A_B.setText(xa_xb)
                 self.caso_B_C.setText(xb_xc)
                 self.caso_C_A.setText(xc_xa)
@@ -395,9 +397,11 @@ class MyGraphic(QWidget):
                 self.coordenadanas_B_C.setText("   X,     Y\n" + "\n".join(coordenadas_B_C))
                 self.coordenadanas_C_A.setText("   X,     Y\n" + "\n".join(coordenadas_C_A))
             elif coordenadas_A_B:
-                self.Xa_Xb_txt.setText(f"(A,B) Xa > Xb: {xa_xb_mayor}")
-                self.Xb_Xc_txt.setText(f"(B,C)Xb > Xc: {self.determinar_caso(xb, xc)[1]}")
-                self.Xc_Xa_txt.setText(f"(C,A)Xc > Xa: {self.determinar_caso(xc, xa)[1]}")
+                xb_xc_2 = self.determinar_caso(xb, xc)[1]
+                xc_xa_2= self.determinar_caso(xc, xa)[1]
+                self.Xa_Xb_txt.setText(f"(A,B)Xa > Xb: {xa_xb_mayor}")
+                self.Xb_Xc_txt.setText(f"(B,C)Xb > Xc: {xb_xc_2}")
+                self.Xc_Xa_txt.setText(f"(C,A)Xc > Xa: {xc_xa_2}")
                 self.caso_A_B.setText(xa_xb)
                 self.caso_B_C.setText(xb_xc)
                 self.caso_C_A.setText(xc_xa)
@@ -612,6 +616,8 @@ class MyGraphic(QWidget):
         self.input_xc.clear()
         self.input_yc.clear()
         self.caso_A_B.clear()
+        self.caso_B_C.clear()
+        self.caso_C_A.clear()
         self.xk_mas_uno_txt.clear()
         self.caso_text.clear() 
         self.Xa_Xb_txt.clear()
