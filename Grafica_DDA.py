@@ -34,7 +34,7 @@ class MyGraphic(QWidget):
     def dibujar_area_grafica(self):
         # Área gráfica (Escena grafica)
         # Título grande en la ventana
-        self.titulo = QLabel("METODO DDA", self)
+        self.titulo = QLabel("Trangulo Relleno", self)
         self.titulo.setGeometry(600, 20, 300, 50)  # x, y, width, height
         self.titulo.setStyleSheet("font-size: 24px; font-weight: bold; color: black;")
         ancho_e = 900
