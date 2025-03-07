@@ -375,7 +375,7 @@ class MyGraphic(QWidget):
             direccion, xa_xb_mayor = self.determinar_caso(xa, xb)
             coordenadas_A_B, caso, xk, xa_xb, ya_yb_error, lis_xa, lis_ya = self.generar_coordenadas(xa, ya, xb, yb)
             xb_xc = self.generar_coordenadas(xb, yb, xc, yc)[3]
-            xc_xa = self.generar_coordenadas(xb, yb, xc, yc)[3]
+            xc_xa = self.generar_coordenadas(xc, yc, xa, ya)[3]
             coordenadas_B_C = self.generar_coordenadas(xb, yb, xc, yc)[0]
             coordenadas_C_A = self.generar_coordenadas(xc, yc, xa, ya)[0]
             
