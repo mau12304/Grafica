@@ -192,17 +192,17 @@ class MyGraphic(QWidget):
 
         # Etiqueta de las coordenadas generadas
         self.coordenadasAB = QLabel("A (Xa, Ya) B (Xb, Yb)", self)
-        self.coordenadasAB.setGeometry(930, 330, 140, 30) # x , y  , widht, hight (Ancho y altura)
-        self.coordenadasAB.setStyleSheet("background-color: rgb(216, 232, 219); color: black; font-size: 14px; padding: 5px;")
+        self.coordenadasAB.setGeometry(930, 330, 150, 30) # x , y  , widht, hight (Ancho y altura)
+        self.coordenadasAB.setStyleSheet("background-color: rgb(216, 232, 219); font-weight: bold; color: black; font-size: 14px; padding: 5px;")
         # Etiqueta de las coordenadas generadas
         self.coordenadasBC = QLabel("B (Xb, Yb) C (Xc, Yc)", self)
-        self.coordenadasBC.setGeometry(1135, 330, 140, 30) # x , y  , widht, hight (Ancho y altura)
-        self.coordenadasBC.setStyleSheet("background-color: rgb(216, 232, 219); color: black; font-size: 14px; padding: 5px;")
+        self.coordenadasBC.setGeometry(1135, 330, 150, 30) # x , y  , widht, hight (Ancho y altura)
+        self.coordenadasBC.setStyleSheet("background-color: rgb(216, 232, 219); font-weight: bold; color: black; font-size: 14px; padding: 5px;")
 
         # Etiqueta de las coordenadas generadas
         self.coordenadasCA = QLabel("C (Xc, Yc) A (Xa, Ya)", self)
-        self.coordenadasCA.setGeometry(1340, 330, 140, 30) # x , y  , widht, hight (Ancho y altura)
-        self.coordenadasCA.setStyleSheet("background-color: rgb(216, 232, 219); color: black; font-size: 15px; padding: 5px;")
+        self.coordenadasCA.setGeometry(1340, 330, 150, 30) # x , y  , widht, hight (Ancho y altura)
+        self.coordenadasCA.setStyleSheet("background-color: rgb(216, 232, 219);font-weight: bold; color: black; font-size: 15px; padding: 5px;")
         
         
         # Layout principal

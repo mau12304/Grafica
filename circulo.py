@@ -31,7 +31,7 @@ class MyGraphic(QWidget):
     def dibujar_area_grafica(self):
         # Área gráfica (Escena grafica)
         # Título grande en la ventana
-        self.titulo = QLabel("METODO DDA", self)
+        self.titulo = QLabel("Circulo Relleno", self)
         self.titulo.setGeometry(600, 20, 300, 50)  # x, y, width, height
         self.titulo.setStyleSheet("font-size: 24px; font-weight: bold; color: black;")
         ancho_e = 900
@@ -56,8 +56,20 @@ class MyGraphic(QWidget):
         self.input_yc = QLineEdit(self)
         self.input_yc.setGeometry(1080, 100, 60, 30)
 
-        self.input_xc.setStyleSheet("background-color: white;")
-        self.input_yc.setStyleSheet("background-color: white;")
+        #Radio 
+        self.label_radio = QLabel("Radio", self)
+        self.label_radio.setGeometry(930, 140, 60, 30)
+        self.input_radio = QLineEdit(self)
+        self.input_radio.setGeometry(970, 140, 60, 30)
+
+        # Establecer colores para los inputs
+        self.input_xc.setStyleSheet("background-color: lightgreen; color: black;")
+        self.input_yc.setStyleSheet("background-color: lightgreen; color: black;")
+        self.input_radio.setStyleSheet("background-color: lightyellow; color: black;")
+        # Establecer colores para los labels
+        self.label_xc.setStyleSheet("color: red; font-weight: bold; ")
+        self.label_yc.setStyleSheet("color: red; font-weight: bold;")
+        self.label_radio.setStyleSheet("color: blue; font-weight: bold;")
 
         # btn_Trazar linea
         self.btn_trazar = QPushButton("Trazar Circulo", self)
@@ -68,42 +80,68 @@ class MyGraphic(QWidget):
         self.btn_limpiar = QPushButton("Limpiar", self)
         self.btn_limpiar.setGeometry(1150, 140, 100, 30)
         self.btn_limpiar.setStyleSheet("background-color: lightgray; color: black;")
+        # Establecer colores para los botones
+        self.btn_trazar.setStyleSheet("background-color: lightblue; color: lightblack; font-weight: bold;")
+        self.btn_limpiar.setStyleSheet("background-color: lightcoral; color: lightblack; font-weight: bold;")
 
         # Layout principal
         self.layout = QVBoxLayout()
 
+        self.PK_label = QLabel("Parametro PK", self)
+        self.PK_label.setGeometry(950, 190, 120, 30)
+        self.PK_label.setStyleSheet("font-size: 15px;background-color: lightcoral;  color: black;padding: 5px;")
         # Crear QLabel para mostrar las coordenadas
-        self.coordenadanas_A_B = QLabel(self)
-        self.coordenadanas_A_B.setStyleSheet("background-color: white; color: black; font-size: 14px; padding: 15px;")
-        self.coordenadanas_A_B.setWordWrap(True)  # Permite que el texto se divida en varias líneas
+        self.parametro = QLabel(self)
+        self.parametro.setStyleSheet("background-color: white; color: black; font-size: 15px; padding-left: 10px;")
+        self.parametro.setWordWrap(True)  # Permite que el texto se divida en varias líneas
 
-        # Crear QLabel para mostrar las coordenadas del círculo
-        self.coordenadanas_B_C = QLabel(self)
-        self.coordenadanas_B_C.setStyleSheet("background-color: white; color: black; font-size: 14px; padding: 15px;")
-        self.coordenadanas_B_C.setWordWrap(True)  # Permite que el texto se divida en varias líneas
+        self.puntos_siguientes_label = QLabel("Xk + 1, Yk -1", self)
+        self.puntos_siguientes_label.setGeometry(1150, 190, 120, 30)
+        self.puntos_siguientes_label.setStyleSheet("font-size: 15px;background-color: lightcoral; color: black;padding: 5px;")
+
+        # Crear QLabel para mostrar las coordenadas
+        self.puntos_siguientes = QLabel(self)
+        self.puntos_siguientes.setStyleSheet("background-color: white;  color: black; font-size: 15px; padding-left: 15px;")
+        self.puntos_siguientes.setWordWrap(True)  # Permite que el texto se divida en varias líneas
+
+        self.puntos_circulo_label = QLabel("Puntos Circulo", self)
+        self.puntos_circulo_label.setGeometry(1345, 190, 120, 30)
+        self.puntos_circulo_label.setStyleSheet("font-size: 15px;background-color: lightcoral; color: black; padding: 5px;")
+        # Crear QLabel para mostrar las coordenadas
+        self.puntos_circulo = QLabel(self)
+        self.puntos_circulo.setStyleSheet("background-color: white;color: black; font-size: 15px; padding-left: 10px;")
+        self.puntos_circulo.setWordWrap(True)  # Permite que el texto se divida en varias líneas
 
         # Crear QScrollArea para contener el QLabel y permitir desplazamiento
-        self.scroll_AB = QScrollArea()
-        self.scroll_AB.setWidgetResizable(True)  # Permite que el QLabel se adapte
-        self.scroll_AB.setWidget(self.coordenadanas_A_B)  # Agregar QLabel al área de scroll
-        self.scroll_AB.setFixedSize(150, 350)  # Mantiene un tamaño fijo sin expandirse
-
+        self.scroll_ps = QScrollArea()
+        self.scroll_ps.setWidgetResizable(True)  # Permite que el QLabel se adapte
+        self.scroll_ps.setWidget(self.puntos_siguientes)  # Agregar QLabel al área de scroll
+        self.scroll_ps.setFixedSize(120, 350)  # Mantiene un tamaño fijo sin expandirse
         # Agregar widgets al layout
-        self.layout.addWidget(self.scroll_AB)  # Agrega el QLabel dentro del ScrollArea
-        self.layout.setContentsMargins(880, 290, 0, 0)  # Posiciona el QLabel en la ventana
+        self.layout.addWidget(self.scroll_ps)  # Agrega el QLabel dentro del ScrollArea
+        self.layout.setContentsMargins(880, 10, 0, 0)  # Posiciona el QLabel en la ventana
         self.setLayout(self.layout)
 
-        self.scroll_BC = QScrollArea()
-        self.scroll_BC.setWidgetResizable(True)
-        self.scroll_BC.setWidget(self.coordenadanas_B_C)
-        self.scroll_BC.setFixedSize(150, 350)
+        self.scroll_p = QScrollArea()
+        self.scroll_p.setWidgetResizable(True)  
+        self.scroll_p.setWidget(self.parametro)  
+        self.scroll_p.setFixedSize(120, 350)  
 
-        self.layout.addWidget(self.scroll_BC)
+        self.layout.addWidget(self.scroll_p)  
+
+        self.scroll_pc = QScrollArea()
+        self.scroll_pc.setWidgetResizable(True)  
+        self.scroll_pc.setWidget(self.puntos_circulo)  
+        self.scroll_pc.setFixedSize(120, 350)  
+
+        self.layout.addWidget(self.scroll_pc)  
+
 
         # Layout horizontal para las coordenadas
         self.horizontal_layout = QHBoxLayout()
-        self.horizontal_layout.addWidget(self.scroll_AB)
-        self.horizontal_layout.addWidget(self.scroll_BC)
+        self.horizontal_layout.addWidget(self.scroll_p)
+        self.horizontal_layout.addWidget(self.scroll_ps)
+        self.horizontal_layout.addWidget(self.scroll_pc)
 
         # Agregar el layout horizontal al layout principal
         self.layout.addLayout(self.horizontal_layout)
@@ -172,10 +210,10 @@ class MyGraphic(QWidget):
         try:
             xc = int(self.input_xc.text())
             yc = int(self.input_yc.text())
-            r = 100  # Puedes ajustar el radio o pedirlo como entrada
+            r = int(self.input_radio.text())
             self.dibujar_circulo(xc, yc, r)
         except ValueError:
-            self.coordenadanas_A_B.setText("Error: Ingresa valores válidos")
+            self.puntos_siguientes.setText("Error: Ingresa valores válidos")
 
     def dibujar_circulo(self, xc, yc, r):
         # Convertir coordenadas de usuario a coordenadas de escena
@@ -191,6 +229,7 @@ class MyGraphic(QWidget):
         puntos = []
         # Lista para almacenar todos los puntos del círculo
         puntos_circulo = []
+        parametro = []
 
         # Dibujar los puntos iniciales y guardarlos en la lista
         self.dibujar_puntos_circulo(xc, yc, x, y, centro_x, centro_y, puntos_circulo)
@@ -204,10 +243,12 @@ class MyGraphic(QWidget):
                 y -= 1
                 p += 2 * (x - y) + 1
             # Dibujar y guardar los puntos en cada iteración
+            parametro.append(p)
             puntos.append((x, y))
             self.dibujar_puntos_circulo(xc, yc, x, y, centro_x, centro_y, puntos_circulo)
 
-        self.coordenadanas_A_B.setText("\n" + "\n".join([f"({x}, {y})" for x, y in puntos]))
+        self.parametro.setText("\n" + "\n".join([f"[ {x} ]" for x in parametro]))
+        self.puntos_siguientes.setText("\n" + "\n".join([f"[ {x}, {y} ]" for x, y in puntos]))
         # Mostrar los puntos en la QLabel
         self.mostrar_puntos_en_label(puntos_circulo)
 
@@ -229,7 +270,7 @@ class MyGraphic(QWidget):
         puntos_circulo.extend(puntos)
 
         # Dibujar cada punto en la escena
-        pen = QPen(Qt.GlobalColor.blue, 2)
+        pen = QPen(Qt.GlobalColor.red, 3, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap, Qt.PenJoinStyle.RoundJoin)
         for px, py in puntos:
             px_scene = centro_x + px * (ancho / 1000)
             py_scene = centro_y - py * (altura / 1000)
@@ -248,7 +289,7 @@ class MyGraphic(QWidget):
         yc_scene = centro_y - yc * (altura / 1000)
 
         # Dibujar líneas desde el centro a cada punto
-        pen = QPen(Qt.GlobalColor.red, 0.9)  # Lápiz para las líneas
+        pen = QPen(Qt.GlobalColor.red, 0.9, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap, Qt.PenJoinStyle.RoundJoin)  # Lápiz para las líneas
         for px, py in puntos:
             px_scene = centro_x + px * (ancho / 1000)
             py_scene = centro_y - py * (altura / 1000)
@@ -258,18 +299,21 @@ class MyGraphic(QWidget):
         # Formatear la lista de puntos como una cadena de texto
         texto_puntos = "Puntos del círculo:\n"
         for punto in puntos_circulo:
-            texto_puntos += f"({punto[0]}, {punto[1]})\n"
+            texto_puntos += f"[ {punto[0]}, {punto[1]} ]\n"
 
         # Mostrar los puntos en la QLabel
-        self.coordenadanas_B_C.setText(texto_puntos)
+        self.puntos_circulo.setText(texto_puntos)
 
     def limpiar_escena(self):
         self.scene.clear()
         self.dibujar_grafica()
-        self.coordenadanas_B_C.clear()
+        self.parametro.clear()
+        self.puntos_siguientes.clear()
+        self.input_radio.clear()
+        self.puntos_circulo.clear()
         self.input_xc.clear()
         self.input_yc.clear()
-        self.coordenadanas_A_B.clear()
+        self.puntos_siguientes.clear()
 
 
 if __name__ == "__main__":
