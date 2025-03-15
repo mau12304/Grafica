@@ -1,64 +1,267 @@
-# from PyQt6.QtWidgets import (
-#     QApplication,
-#     QWidget,
-#     QGraphicsView,
-#     QGraphicsScene,
-#     QGraphicsLineItem,
-#     QGraphicsTextItem,
-#     QVBoxLayout,
-#     QPushButton,
-#     QLineEdit,
-#     QLabel,
-#     QHBoxLayout,
-#     QScrollArea,
-# )
+from PyQt6.QtWidgets import (
+    QApplication,
+    QWidget,
+    QGraphicsView,
+    QGraphicsScene,
+    QVBoxLayout,
+    QPushButton,
+    QLineEdit,
+    QLabel,
+    QHBoxLayout,
+    QScrollArea,
+    QGraphicsTextItem,
+)
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPen
 
-# class HojaCalculo(QWidget):
-#     def __init__(self):
-#         super().__init__()
+class MyGraphic(QWidget):
+    def __init__(self):
+        super().__init__()
+        # Dimensiones de la ventana (Vista en windows)
+        ancho_v = 1450
+        altura_v = 750
+        porsicion_x = 50  # izquierda y derecha
+        porsicion_y = 50  # arriba y abajo
+        self.setWindowTitle("PyQt6 Grafica Con Axes")  # Título de la ventana
+        self.setGeometry(porsicion_x, porsicion_y, ancho_v, altura_v)
+        self.setStyleSheet("background-color: rgb(176, 208, 228);")
+        self.dibujar_area_grafica()
 
-#         ancho_v = 1450
-#         altura_v = 750
-#         porsicion_x = 50  # izquierda y derecha
-#         porsicion_y = 50  # arriba y abajo
-#         self.setWindowTitle("PyQt6 Grafica Con Axes")  # Título de la ventana
-#         self.setGeometry(porsicion_x, porsicion_y, ancho_v, altura_v)
-#         self.setStyleSheet("background-color: rgb(176, 208, 228);")
-#         self.dibujarHoja()
-    
-#     def dibujarHoja(self):
+    def dibujar_area_grafica(self):
+        # Área gráfica (Escena grafica)
+        # Título grande en la ventana
+        self.titulo = QLabel("Circulo Relleno", self)
+        self.titulo.setGeometry(600, 20, 300, 50)  # x, y, width, height
+        self.titulo.setStyleSheet("font-size: 24px; font-weight: bold; color: black;")
+        ancho_e = 900
+        altura_e = 600
+        posicion_e_x = 10
+        posicion_e_y = 95  # Más es menos y Menos es más
+        self.graphics_view = QGraphicsView(self)
+        self.graphics_view.setGeometry(posicion_e_x, posicion_e_y, ancho_e, altura_e)  # Posición y tamaño de la gráfica
+        self.scene = QGraphicsScene()
+        self.graphics_view.setScene(self.scene)
+        self.graphics_view.setStyleSheet("background-color: rgb(216, 232, 219);")
 
-#         self.extendida =  QLabel("Extendida", self)
-#         self.extendida.setGeometry(530, 100, 60, 30)
-#         self.input_extendida  = QLineEdit(self)
-#         self.input_extendida.setGeometry(600, 100, 60, 30)
-#         self.setStyleSheet("background-color: lightcoral;")
+        # Xc
+        self.label_xc = QLabel("Xc:", self)
+        self.label_xc.setGeometry(930, 100, 60, 30)
+        self.input_xc = QLineEdit(self)
+        self.input_xc.setGeometry(970, 100, 60, 30)
+
+        # Yc
+        self.label_yc = QLabel("Yc:", self)
+        self.label_yc.setGeometry(1040, 100, 60, 30)
+        self.input_yc = QLineEdit(self)
+        self.input_yc.setGeometry(1080, 100, 60, 30)
+
+        # Radio
+        self.label_radio = QLabel("Radio", self)
+        self.label_radio.setGeometry(930, 140, 60, 30)
+        self.input_radio = QLineEdit(self)
+        self.input_radio.setGeometry(970, 140, 60, 30)
+
+        # Establecer colores para los inputs
+        self.input_xc.setStyleSheet("background-color: lightgreen; color: black;")
+        self.input_yc.setStyleSheet("background-color: lightgreen; color: black;")
+        self.input_radio.setStyleSheet("background-color: lightyellow; color: black;")
+        # Establecer colores para los labels
+        self.label_xc.setStyleSheet("color: red; font-weight: bold; ")
+        self.label_yc.setStyleSheet("color: red; font-weight: bold;")
+        self.label_radio.setStyleSheet("color: blue; font-weight: bold;")
+
+        # btn_Trazar linea
+        self.btn_trazar = QPushButton("Trazar Circulo", self)
+        self.btn_trazar.setGeometry(1150, 100, 100, 30)
+        self.btn_trazar.setStyleSheet("background-color: lightblue; color: black; font-weight: bold;")
+
+        # btn_Limpiar
+        self.btn_limpiar = QPushButton("Limpiar", self)
+        self.btn_limpiar.setGeometry(1150, 140, 100, 30)
+        self.btn_limpiar.setStyleSheet("background-color: lightcoral; color: black; font-weight: bold;")
+
+        # Layout principal
+        self.layout = QVBoxLayout()
+
+        # Crear 8 QLabel para los octantes
+        self.octantes_labels = []
+        for i in range(8):
+            label = QLabel(f"Octante {i + 1}", self)
+            label.setGeometry(930 + (i % 4) * 160, 200 + (i // 4) * 120, 150, 100)
+            label.setStyleSheet("background-color: lightgray; color: black; font-size: 14px; padding: 5px;")
+            label.setFixedSize(150, 250)  # Tamaño fijo para cada QLabel
+            self.octantes_labels.append(label)
+
+        # Crear un layout horizontal para los octantes
+        self.octantes_layout = QHBoxLayout()
+        for label in self.octantes_labels:
+            self.octantes_layout.addWidget(label)
+
+        # Agregar el layout de octantes al layout principal
+        # Crear un QScrollArea para los octantes
+        self.scroll_area = QScrollArea(self)
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setGeometry(930, 200, 440, 240)  # Ajustar el tamaño y la posición según sea necesario
+        self.scroll_area.setStyleSheet("background-color: lightblue;")
+
+        # Crear un widget contenedor para los octantes y establecer el layout
+        self.octantes_widget = QWidget()
+        self.octantes_widget.setLayout(self.octantes_layout)
+
+        # Establecer el widget contenedor en el QScrollArea
+        self.scroll_area.setWidget(self.octantes_widget)
+
+        # Agregar el QScrollArea al layout principal
+        self.layout.addWidget(self.scroll_area)
+
+        # Conectar los botones a sus respectivas funciones
+        self.btn_trazar.clicked.connect(self.on_trazar_clicked)
+        self.btn_limpiar.clicked.connect(self.limpiar_escena)
+
+        # Dibujar los ejes
+        self.dibujar_grafica()
+
+    def dibujar_grafica(self):
+        self.scene.clear()  # Limpia la escena antes de dibujar
+
+        # Definir dimensiones del gráfico
+        ancho, altura = 800, 500  # Tamaño del área del gráfico
+        margen = 50  # Margen para separar el gráfico de los bordes
+
+        # Dibujar el contorno del gráfico
+        rect_pen = QPen(Qt.GlobalColor.black, 1)
+        self.scene.addRect(margen, margen, ancho, altura, rect_pen)
+
+        # Configuración de los ejes X e Y
+        axis_pen = QPen(Qt.GlobalColor.black, 1.8)
+
+        # Dibujar eje X
+        inicio_x, fin_x = 50, 850  # Posición inicial y final en X
+        altura_x = 300  # Altura en la que se traza el eje X
+        self.scene.addLine(inicio_x, altura_x, fin_x, altura_x, axis_pen)
+
+        # Dibujar eje Y
+        inicio_y, fin_y = 450, 550  # Posición inicial y final en Y
+        margen_y_superior = 50  # Margen superior para el eje Y
+        self.scene.addLine(inicio_y, margen_y_superior, inicio_y, fin_y, axis_pen)
+
+        # Dibujar la cuadrícula
+        grid_pen = QPen(Qt.GlobalColor.lightGray, 1, Qt.PenStyle.DotLine)
+        num_lineas = 20  # Número de líneas de la cuadrícula
+
+        for i in range(1, num_lineas):
+            # Líneas verticales de la cuadrícula
+            x = margen + i * (ancho / num_lineas)
+            self.scene.addLine(x, margen, x, margen + altura, grid_pen)
+
+            # Líneas horizontales de la cuadrícula
+            y = margen + i * (altura / num_lineas)
+            self.scene.addLine(margen, y, margen + ancho, y, grid_pen)
+
+        # Agregar etiquetas a los ejes
+        # Agregar etiquetas a los ejes
+        for i in range(-500, 600, 100):  # Rango de valores en los ejes
+            # Etiquetas del eje X
+            x_pos = inicio_y + i * (ancho / 1000)
+            text_x = QGraphicsTextItem(f"{i}")
+            text_x.setPos(x_pos - 12, altura_x - 5)
+            self.scene.addItem(text_x)
+
+            # Etiquetas del eje Y
+            y_pos = altura_x - i * (altura / 1000)
+            text_y = QGraphicsTextItem(f"{i}")
+            text_y.setPos(inicio_y - 3, y_pos - 5)
+            self.scene.addItem(text_y)
+            text_x.setDefaultTextColor(Qt.GlobalColor.black)
+            text_y.setDefaultTextColor(Qt.GlobalColor.black)
 
 
+    def on_trazar_clicked(self):
+        try:
+            xc = int(self.input_xc.text())
+            yc = int(self.input_yc.text())
+            r = int(self.input_radio.text())
+            self.dibujar_circulo(xc, yc, r)
+        except ValueError:
+            self.octantes_labels[0].setText("Error: Ingresa valores válidos")
 
-# if __name__ == "__main__":
-#     app = QApplication([])
-#     window = HojaCalculo()
-#     window.show()
-#     app.exec()
-xc , x, yc, y = 10, 3, 15, 4
+    def dibujar_circulo(self, xc, yc, r):
+        # Convertir coordenadas de usuario a coordenadas de escena
+        ancho, altura = 800, 500
+        margen = 50
+        centro_x = margen + ancho / 2
+        centro_y = margen + altura / 2
 
+        # Inicializar variables
+        x = 0
+        y = r
+        p = 1 - r  # Parámetro de decisión inicial
 
+        # Listas para almacenar los puntos de cada octante
+        octantes = [[] for _ in range(8)]
 
-puntos = [
-            (xc + x, yc + y),
-            (xc - x, yc + y),
-            (xc + x, yc - y),
-            (xc - x, yc - y),
-            (xc + y, yc + x),
-            (xc - y, yc + x),
-            (xc + y, yc - x),
-            (xc - y, yc - x),
+        # Dibujar los puntos iniciales y guardarlos en las listas
+        self.dibujar_puntos_circulo(xc, yc, x, y, centro_x, centro_y, octantes)
+
+        # Algoritmo de punto medio para el círculo
+        while x < y:
+            x += 1
+            if p < 0:
+                p += 2 * x + 1
+            else:
+                y -= 1
+                p += 2 * (x - y) + 1
+            # Dibujar y guardar los puntos en cada iteración
+            self.dibujar_puntos_circulo(xc, yc, x, y, centro_x, centro_y, octantes)
+
+        # Mostrar los puntos en las etiquetas de los octantes
+        self.mostrar_puntos_octantes(octantes)
+
+    def dibujar_puntos_circulo(self, xc, yc, x, y, centro_x, centro_y, octantes):
+        # Dibujar los 8 puntos de simetría del círculo
+        ancho, altura = 800, 500
+        puntos = [
+            (xc + x, yc + y),  # Primer octante
+            (xc - x, yc + y),  # Segundo octante
+            (xc + x, yc - y),  # Tercer octante
+            (xc - x, yc - y),  # Cuarto octante
+            (xc + y, yc + x),  # Quinto octante
+            (xc - y, yc + x),  # Sexto octante
+            (xc + y, yc - x),  # Séptimo octante
+            (xc - y, yc - x),  # Octavo octante
         ]
 
+        # Agregar los puntos a las listas de octantes
+        for i in range(8):
+            octantes[i].append(puntos[i])
 
-completo = []
-for px, py in puntos:
-    completo.append(f"[ {px}, {py} ]")
+        # Dibujar cada punto en la escena
+        pen = QPen(Qt.GlobalColor.blue, 2)
+        for px, py in puntos:
+            px_scene = centro_x + px * (ancho / 1000)
+            py_scene = centro_y - py * (altura / 1000)
+            self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
 
-print(completo)
+    def mostrar_puntos_octantes(self, octantes):
+        # Mostrar los puntos en las etiquetas de los octantes
+        for i in range(8):
+            texto_puntos = f"Octante {i + 1}:\n"
+            for punto in octantes[i]:
+                texto_puntos += f"({punto[0]}, {punto[1]})\n"
+            self.octantes_labels[i].setText(texto_puntos)
+
+    def limpiar_escena(self):
+        self.scene.clear()
+        self.dibujar_grafica()
+        for label in self.octantes_labels:
+            label.clear()
+        self.input_xc.clear()
+        self.input_yc.clear()
+        self.input_radio.clear()
+
+
+if __name__ == "__main__":
+    app = QApplication([])
+    window = MyGraphic()
+    window.show()
+    app.exec()

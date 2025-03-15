@@ -87,68 +87,64 @@ class MyGraphic(QWidget):
         # Layout principal
         self.layout = QVBoxLayout()
 
-        self.PK_label = QLabel("Parametro PK", self)
-        self.PK_label.setGeometry(950, 190, 120, 30)
-        self.PK_label.setStyleSheet("font-size: 15px;background-color: lightcoral;  color: black;padding: 5px;")
-        # Crear QLabel para mostrar las coordenadas
-        self.parametro = QLabel(self)
-        self.parametro.setStyleSheet("background-color: white; color: black; font-size: 15px; padding-left: 10px;")
-        self.parametro.setWordWrap(True)  # Permite que el texto se divida en varias líneas
+        # Crear 8 QLabel para los octantes
+        self.octantes_labels = []
+        for i in range(8):
+            label = QLabel(f"Octante {i + 1}", self)
+            label.setGeometry(930 + (i % 4) * 160, 200 + (i // 4) * 120, 200, 100)
+            label.setStyleSheet("background-color: white; color: black; font-size: 14px; padding: 5px;")
+            label.setWordWrap(True)  # Permitir que el texto se ajuste en varias líneas
+            label.setFixedSize(150, 2500)  # Establecer un tamaño fijo para las etiquetas
+            self.octantes_labels.append(label)
+    
 
-        self.puntos_siguientes_label = QLabel("Xk + 1, Yk -1", self)
-        self.puntos_siguientes_label.setGeometry(1150, 190, 120, 30)
-        self.puntos_siguientes_label.setStyleSheet("font-size: 15px;background-color: lightcoral; color: black;padding: 5px;")
+        # Crear un layout horizontal para los octantes
+        self.octantes_layout = QHBoxLayout()
+        for label in self.octantes_labels:
+            self.octantes_layout.addWidget(label)
 
-        # Crear QLabel para mostrar las coordenadas
-        self.puntos_siguientes = QLabel(self)
-        self.puntos_siguientes.setStyleSheet("background-color: white;  color: black; font-size: 15px; padding-left: 15px;")
-        self.puntos_siguientes.setWordWrap(True)  # Permite que el texto se divida en varias líneas
+        # Agregar el layout de octantes al layout principal
+        # Crear un QScrollArea para los octantes
+        self.scroll_area = QScrollArea(self)
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setGeometry(930, 200, 440, 240)  # Ajustar el tamaño y la posición según sea necesario
+        self.scroll_area.setStyleSheet("background-color: lightblue;")
 
-        self.puntos_circulo_label = QLabel("Puntos Circulo", self)
-        self.puntos_circulo_label.setGeometry(1345, 190, 120, 30)
-        self.puntos_circulo_label.setStyleSheet("font-size: 15px;background-color: lightcoral; color: black; padding: 5px;")
-        # Crear QLabel para mostrar las coordenadas
-        self.puntos_circulo = QLabel(self)
-        self.puntos_circulo.setStyleSheet("background-color: white;color: black; font-size: 15px; padding-left: 10px;")
-        self.puntos_circulo.setWordWrap(True)  # Permite que el texto se divida en varias líneas
+        # Crear un widget contenedor para los octantes y establecer el layout
+        self.octantes_widget = QWidget()
+        self.octantes_widget.setLayout(self.octantes_layout)
 
-        # Crear QScrollArea para contener el QLabel y permitir desplazamiento
-        self.scroll_ps = QScrollArea()
-        self.scroll_ps.setWidgetResizable(True)  # Permite que el QLabel se adapte
-        self.scroll_ps.setWidget(self.puntos_siguientes)  # Agregar QLabel al área de scroll
-        self.scroll_ps.setFixedSize(120, 350)  # Mantiene un tamaño fijo sin expandirse
-        # Agregar widgets al layout
-        self.layout.addWidget(self.scroll_ps)  # Agrega el QLabel dentro del ScrollArea
-        self.layout.setContentsMargins(880, 10, 0, 0)  # Posiciona el QLabel en la ventana
-        self.setLayout(self.layout)
+        # Establecer el widget contenedor en el QScrollArea
+        self.scroll_area.setWidget(self.octantes_widget)
 
-        self.scroll_p = QScrollArea()
-        self.scroll_p.setWidgetResizable(True)  
-        self.scroll_p.setWidget(self.parametro)  
-        self.scroll_p.setFixedSize(120, 350)  
+        # Agregar el QScrollArea al layout principal
+        self.layout.addWidget(self.scroll_area)
 
-        self.layout.addWidget(self.scroll_p)  
-
-        self.scroll_pc = QScrollArea()
-        self.scroll_pc.setWidgetResizable(True)  
-        self.scroll_pc.setWidget(self.puntos_circulo)  
-        self.scroll_pc.setFixedSize(120, 350)  
-
-        self.layout.addWidget(self.scroll_pc)  
-
-
-        # Layout horizontal para las coordenadas
-        self.horizontal_layout = QHBoxLayout()
-        self.horizontal_layout.addWidget(self.scroll_p)
-        self.horizontal_layout.addWidget(self.scroll_ps)
-        self.horizontal_layout.addWidget(self.scroll_pc)
-
-        # Agregar el layout horizontal al layout principal
-        self.layout.addLayout(self.horizontal_layout)
 
         # Conectar los botones a sus respectivas funciones
         self.btn_trazar.clicked.connect(self.on_trazar_clicked)
         self.btn_limpiar.clicked.connect(self.limpiar_escena)
+
+
+        # Crear QLabel para mostrar las coordenadas
+        self.parametro = QLabel(self)
+        self.parametro.setGeometry(930, 450, 440, 100)  # Ajustar la posición y el tamaño según sea necesario
+        self.parametro.setStyleSheet("background-color: white; color: black; font-size: 15px; padding-left: 25px;")
+        self.parametro.setWordWrap(True)  # Permite que el texto se divida en varias líneas
+
+        # Crear un QScrollArea para el QLabel
+        self.scroll_parametro = QScrollArea(self)
+        self.scroll_parametro.setWidgetResizable(True)
+        self.scroll_parametro.setGeometry(930, 450, 440, 200)  # Ajustar el tamaño y la posición según sea necesario
+        self.scroll_parametro.setStyleSheet("background-color: lightblue;")
+
+        # Establecer el QLabel en el QScrollArea
+        self.scroll_parametro.setWidget(self.parametro)
+
+        # Agregar el QScrollArea al layout principal
+        self.layout.addWidget(self.scroll_parametro)
+        self.parametro.setStyleSheet("background-color: white; color: black; font-size: 15px; padding-left: 25px;")
+        self.parametro.setWordWrap(True)  # Permite que el texto se divida en varias líneas
 
         # Dibujar los ejes
         self.dibujar_grafica()
@@ -213,7 +209,8 @@ class MyGraphic(QWidget):
             r = int(self.input_radio.text())
             self.dibujar_circulo(xc, yc, r)
         except ValueError:
-            self.puntos_siguientes.setText("Error: Ingresa valores válidos")
+            self.octantes_labels[0].setText("Error: Ingresa valores válidos")
+
 
     def dibujar_circulo(self, xc, yc, r):
         # Convertir coordenadas de usuario a coordenadas de escena
@@ -221,38 +218,41 @@ class MyGraphic(QWidget):
         margen = 50
         centro_x = margen + ancho / 2
         centro_y = margen + altura / 2
-
+        puntos = []
+        parametro = []
+        octantes = [[] for _ in range(8)]
         # Inicializar variables
         x = 0
         y = r
         p = 1 - r  # Parámetro de decisión inicial
-        puntos = []
-        # Lista para almacenar todos los puntos del círculo
-        puntos_circulo = []
-        parametro = []
+        iteracion = 0
+        puntos.append((x, y))
+        parametro.append(y)
+        parametro.append(p)
 
         # Dibujar los puntos iniciales y guardarlos en la lista
-        self.dibujar_puntos_circulo(xc, yc, x, y, centro_x, centro_y, puntos_circulo)
-
+        # self.dibujar_puntos_circulo(xc, yc, x, p, centro_x, centro_y, octantes)
+        self.dibujar_puntos_circulo(xc, yc, x, y, centro_x, centro_y, octantes)
         # Algoritmo de punto medio para el círculo
-        while x < y:
+        while iteracion < y:
+            iteracion += 1
             x += 1
             if p < 0:
                 p += 2 * x + 1
             else:
                 y -= 1
                 p += 2 * (x - y) + 1
+                
             # Dibujar y guardar los puntos en cada iteración
             parametro.append(p)
             puntos.append((x, y))
-            self.dibujar_puntos_circulo(xc, yc, x, y, centro_x, centro_y, puntos_circulo)
+            self.dibujar_puntos_circulo(xc, yc, x, y, centro_x, centro_y, octantes)
+            
 
-        self.parametro.setText("\n" + "\n".join([f"[ {x} ]" for x in parametro]))
-        self.puntos_siguientes.setText("\n" + "\n".join([f"[ {x}, {y} ]" for x, y in puntos]))
-        # Mostrar los puntos en la QLabel
-        self.mostrar_puntos_en_label(puntos_circulo)
+        self.parametro.setText("\n" + "\n".join([f"PK: {p}, Puntos Siguientes: [ {x1}, {y} ]" for p, (x1, y) in zip(parametro, puntos)]))
+        self.mostrar_puntos_octantes(octantes)
 
-    def dibujar_puntos_circulo(self, xc, yc, x, y, centro_x, centro_y, puntos_circulo):
+    def dibujar_puntos_circulo(self, xc, yc, x, y, centro_x, centro_y, octantes):
         # Dibujar los 8 puntos de simetría del círculo
         ancho, altura = 800, 500
         puntos = [
@@ -267,10 +267,11 @@ class MyGraphic(QWidget):
         ]
 
         # Agregar los puntos a la lista
-        puntos_circulo.extend(puntos)
+        for i in range(8):
+            octantes[i].append(puntos[i])
 
         # Dibujar cada punto en la escena
-        pen = QPen(Qt.GlobalColor.red, 3, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap, Qt.PenJoinStyle.RoundJoin)
+        pen = QPen(Qt.GlobalColor.red, 1, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap, Qt.PenJoinStyle.RoundJoin)
         for px, py in puntos:
             px_scene = centro_x + px * (ancho / 1000)
             py_scene = centro_y - py * (altura / 1000)
@@ -295,25 +296,24 @@ class MyGraphic(QWidget):
             py_scene = centro_y - py * (altura / 1000)
             self.scene.addLine(xc_scene, yc_scene, px_scene, py_scene, pen)
 
-    def mostrar_puntos_en_label(self, puntos_circulo):
-        # Formatear la lista de puntos como una cadena de texto
-        texto_puntos = "Puntos del círculo:\n"
-        for punto in puntos_circulo:
-            texto_puntos += f"[ {punto[0]}, {punto[1]} ]\n"
+    def mostrar_puntos_octantes(self, octantes):
+        # Mostrar los puntos en las etiquetas de los octantes
+        for i in range(8):
+            texto_puntos = f"Octante {i + 1}:\n"
+            for punto in octantes[i]:
+                texto_puntos += f"({punto[0]}, {punto[1]})\n"
+            self.octantes_labels[i].setText(texto_puntos)
 
-        # Mostrar los puntos en la QLabel
-        self.puntos_circulo.setText(texto_puntos)
 
     def limpiar_escena(self):
         self.scene.clear()
         self.dibujar_grafica()
         self.parametro.clear()
-        self.puntos_siguientes.clear()
         self.input_radio.clear()
-        self.puntos_circulo.clear()
+        for label in self.octantes_labels:
+            label.clear()
         self.input_xc.clear()
         self.input_yc.clear()
-        self.puntos_siguientes.clear()
 
 
 if __name__ == "__main__":
