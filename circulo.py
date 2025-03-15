@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (
     QGraphicsScene,
     QGraphicsLineItem,
     QGraphicsTextItem,
+    QStylePainter,
     QVBoxLayout,
     QPushButton,
     QLineEdit,
@@ -14,6 +15,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPen
+from PyQt6.QtGui import QPainter
 
 class MyGraphic(QWidget):
     def __init__(self):
@@ -39,6 +41,11 @@ class MyGraphic(QWidget):
         posicion_e_x = 10
         posicion_e_y = 95  # Más es menos y Menos es más
         self.graphics_view = QGraphicsView(self)
+        self.graphics_view.setRenderHint(QPainter.RenderHint.Antialiasing)
+        self.graphics_view.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
+        self.graphics_view.setTransformationAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
+        self.graphics_view.setResizeAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
+        self.graphics_view.wheelEvent = self.wheelEvent
         self.graphics_view.setGeometry(posicion_e_x, posicion_e_y, ancho_e, altura_e)  # Posición y tamaño de la gráfica
         self.scene = QGraphicsScene()
         self.graphics_view.setScene(self.scene)
@@ -85,7 +92,7 @@ class MyGraphic(QWidget):
         self.btn_limpiar.setStyleSheet("background-color: lightcoral; color: lightblack; font-weight: bold;")
 
         # Layout principal
-        self.layout = QVBoxLayout()
+        self.layout = QVBoxLayout() 
 
         # Crear 8 QLabel para los octantes
         self.octantes_labels = []
@@ -214,10 +221,11 @@ class MyGraphic(QWidget):
 
     def dibujar_circulo(self, xc, yc, r):
         # Convertir coordenadas de usuario a coordenadas de escena
-        ancho, altura = 800, 500
+        ancho, altura = 800 , 500 
         margen = 50
-        centro_x = margen + ancho / 2
-        centro_y = margen + altura / 2
+        centro_x = margen + ancho / 2 
+        centro_y = margen + altura / 2 
+
         puntos = []
         parametro = []
         octantes = [[] for _ in range(8)]
@@ -225,58 +233,121 @@ class MyGraphic(QWidget):
         x = 0
         y = r
         p = 1 - r  # Parámetro de decisión inicial
-        iteracion = 0
-        puntos.append((x, y))
-        parametro.append(y)
         parametro.append(p)
 
-        # Dibujar los puntos iniciales y guardarlos en la lista
-        # self.dibujar_puntos_circulo(xc, yc, x, p, centro_x, centro_y, octantes)
-        self.dibujar_puntos_circulo(xc, yc, x, y, centro_x, centro_y, octantes)
+
         # Algoritmo de punto medio para el círculo
-        while iteracion < y:
-            iteracion += 1
+        while x <= y:
             x += 1
             if p < 0:
                 p += 2 * x + 1
             else:
                 y -= 1
-                p += 2 * (x - y) + 1
+                p += 2 * x + 1 - 2 * y
                 
             # Dibujar y guardar los puntos en cada iteración
             parametro.append(p)
             puntos.append((x, y))
-            self.dibujar_puntos_circulo(xc, yc, x, y, centro_x, centro_y, octantes)
             
 
-        self.parametro.setText("\n" + "\n".join([f"PK: {p}, Puntos Siguientes: [ {x1}, {y} ]" for p, (x1, y) in zip(parametro, puntos)]))
+        self.dibujar_puntos_circulo(xc, yc,puntos, centro_x, centro_y, octantes)
+        self.parametro.setText("\n" + "\n".join([f"PK: {p}, Puntos Siguientes: [ {x}, {y} ]" for p, (x, y) in zip(parametro, puntos)]))
         self.mostrar_puntos_octantes(octantes)
 
-    def dibujar_puntos_circulo(self, xc, yc, x, y, centro_x, centro_y, octantes):
+    def dibujar_puntos_circulo(self, xc, yc,puntos, centro_x, centro_y, octantes):
         # Dibujar los 8 puntos de simetría del círculo
         ancho, altura = 800, 500
-        puntos = [
-            (xc + x, yc + y),  # Primer octante
-            (xc - x, yc + y),  # Segundo octante
-            (xc + x, yc - y),  # Tercer octante
-            (xc - x, yc - y),  # Cuarto octante
-            (xc + y, yc + x),  # Quinto octante
-            (xc - y, yc + x),  # Sexto octante
-            (xc + y, yc - x),  # Séptimo octante
-            (xc - y, yc - x),  # Octavo octante
-        ]
-
-        # Agregar los puntos a la lista
-        for i in range(8):
-            octantes[i].append(puntos[i])
-
+        puntos_rellenar = []
+        iteracion = 0
+        scale = min(ancho , altura) / 1000
+         
         # Dibujar cada punto en la escena
-        pen = QPen(Qt.GlobalColor.red, 1, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap, Qt.PenJoinStyle.RoundJoin)
-        for px, py in puntos:
-            px_scene = centro_x + px * (ancho / 1000)
-            py_scene = centro_y - py * (altura / 1000)
-            self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
-            self.rellenar_circulo(xc, yc, puntos)
+        pen = QPen(Qt.GlobalColor.red, 1)
+        while iteracion < 8:
+        #    Código modificado:
+            if iteracion == 0:
+                iteracion += 1
+                for x, y in puntos:
+                    px = x + xc
+                    py = y + yc
+                    px_scene = centro_x + px * scale
+                    py_scene = centro_y - py * scale
+                    octantes[0].append((px, py))
+                    puntos_rellenar.append((px, py))
+                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
+            elif iteracion == 1:
+                iteracion += 1
+                for x, y in puntos:
+                    px = y + yc
+                    py = x + xc
+                    px_scene = centro_x + px * scale
+                    py_scene = centro_y - py * scale
+                    octantes[1].append((px, py))
+                    puntos_rellenar.append((px, py))
+                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
+            elif iteracion == 2:
+                iteracion += 1
+                for x, y in puntos:
+                    px = -y + yc
+                    py = x + xc
+                    px_scene = centro_x + px * scale
+                    py_scene = centro_y - py * scale
+                    octantes[2].append((px, py))
+                    puntos_rellenar.append((px, py))
+                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
+            elif iteracion == 3:
+                iteracion += 1
+                for x, y in puntos:
+                    px = x + xc
+                    py = -y + yc
+                    px_scene = centro_x + px * scale
+                    py_scene = centro_y - py * scale
+                    octantes[3].append((px, py))
+                    puntos_rellenar.append((px, py))
+                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
+            elif iteracion == 4: 
+                iteracion += 1   
+                for x, y in puntos:
+                    px = -y + yc
+                    py = -x + xc
+                    px_scene = centro_x + px * scale
+                    py_scene = centro_y - py * scale
+                    octantes[4].append((px, py))
+                    puntos_rellenar.append((px, py))
+                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
+            elif iteracion == 5:
+                iteracion += 1
+                for x, y in puntos:
+                    px = -x + xc
+                    py = -y + yc
+                    px_scene = centro_x + px * scale
+                    py_scene = centro_y - py * scale
+                    octantes[5].append((px, py))
+                    puntos_rellenar.append((px, py))
+                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
+            elif iteracion == 6:
+                iteracion += 1
+                for x, y in puntos:
+                    px = -x + xc
+                    py = y + yc
+                    px_scene = centro_x + px * scale
+                    py_scene = centro_y - py * scale
+                    octantes[6].append((px, py))
+                    puntos_rellenar.append((px, py))
+                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
+            elif iteracion == 7:
+                iteracion += 1
+                for x, y in puntos:
+                    px = y + yc
+                    py = -x + xc
+                    px_scene = centro_x + px * scale
+                    py_scene = centro_y - py * scale
+                    octantes[7].append((px, py))
+                    puntos_rellenar.append((px, py))
+                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
+
+        self.rellenar_circulo(xc, yc, puntos_rellenar)
+
         
     def rellenar_circulo(self, xc, yc, puntos):
         # Convertir coordenadas de usuario a coordenadas de escena
@@ -285,16 +356,20 @@ class MyGraphic(QWidget):
         centro_x = margen + ancho / 2
         centro_y = margen + altura / 2
 
+        # Factor de escala uniforme basado en el mínimo entre ancho y altura
+        scale = min(ancho, altura) / 1000
+
         # Convertir el centro a coordenadas de escena
-        xc_scene = centro_x + xc * (ancho / 1000)
-        yc_scene = centro_y - yc * (altura / 1000)
+        xc_scene = centro_x + xc * scale
+        yc_scene = centro_y - yc * scale
 
         # Dibujar líneas desde el centro a cada punto
-        pen = QPen(Qt.GlobalColor.red, 0.9, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap, Qt.PenJoinStyle.RoundJoin)  # Lápiz para las líneas
+        pen = QPen(Qt.GlobalColor.red, 0.9, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap, Qt.PenJoinStyle.RoundJoin)
         for px, py in puntos:
-            px_scene = centro_x + px * (ancho / 1000)
-            py_scene = centro_y - py * (altura / 1000)
+            px_scene = centro_x + px * scale
+            py_scene = centro_y - py * scale
             self.scene.addLine(xc_scene, yc_scene, px_scene, py_scene, pen)
+
 
     def mostrar_puntos_octantes(self, octantes):
         # Mostrar los puntos en las etiquetas de los octantes

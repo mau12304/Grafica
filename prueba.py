@@ -3,16 +3,19 @@ from PyQt6.QtWidgets import (
     QWidget,
     QGraphicsView,
     QGraphicsScene,
+    QGraphicsLineItem,
+    QGraphicsTextItem,
+    QStylePainter,
     QVBoxLayout,
     QPushButton,
     QLineEdit,
     QLabel,
     QHBoxLayout,
     QScrollArea,
-    QGraphicsTextItem,
 )
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPen
+from PyQt6.QtGui import QPainter
 
 class MyGraphic(QWidget):
     def __init__(self):
@@ -38,6 +41,11 @@ class MyGraphic(QWidget):
         posicion_e_x = 10
         posicion_e_y = 95  # Más es menos y Menos es más
         self.graphics_view = QGraphicsView(self)
+        self.graphics_view.setRenderHint(QPainter.RenderHint.Antialiasing)
+        self.graphics_view.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
+        self.graphics_view.setTransformationAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
+        self.graphics_view.setResizeAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
+        self.graphics_view.wheelEvent = self.wheelEvent
         self.graphics_view.setGeometry(posicion_e_x, posicion_e_y, ancho_e, altura_e)  # Posición y tamaño de la gráfica
         self.scene = QGraphicsScene()
         self.graphics_view.setScene(self.scene)
@@ -55,7 +63,7 @@ class MyGraphic(QWidget):
         self.input_yc = QLineEdit(self)
         self.input_yc.setGeometry(1080, 100, 60, 30)
 
-        # Radio
+        #Radio 
         self.label_radio = QLabel("Radio", self)
         self.label_radio.setGeometry(930, 140, 60, 30)
         self.input_radio = QLineEdit(self)
@@ -73,24 +81,29 @@ class MyGraphic(QWidget):
         # btn_Trazar linea
         self.btn_trazar = QPushButton("Trazar Circulo", self)
         self.btn_trazar.setGeometry(1150, 100, 100, 30)
-        self.btn_trazar.setStyleSheet("background-color: lightblue; color: black; font-weight: bold;")
+        self.btn_trazar.setStyleSheet("background-color: lightgray; color: black;")
 
         # btn_Limpiar
         self.btn_limpiar = QPushButton("Limpiar", self)
         self.btn_limpiar.setGeometry(1150, 140, 100, 30)
-        self.btn_limpiar.setStyleSheet("background-color: lightcoral; color: black; font-weight: bold;")
+        self.btn_limpiar.setStyleSheet("background-color: lightgray; color: black;")
+        # Establecer colores para los botones
+        self.btn_trazar.setStyleSheet("background-color: lightblue; color: lightblack; font-weight: bold;")
+        self.btn_limpiar.setStyleSheet("background-color: lightcoral; color: lightblack; font-weight: bold;")
 
         # Layout principal
-        self.layout = QVBoxLayout()
+        self.layout = QVBoxLayout() 
 
         # Crear 8 QLabel para los octantes
         self.octantes_labels = []
         for i in range(8):
             label = QLabel(f"Octante {i + 1}", self)
-            label.setGeometry(930 + (i % 4) * 160, 200 + (i // 4) * 120, 150, 100)
-            label.setStyleSheet("background-color: lightgray; color: black; font-size: 14px; padding: 5px;")
-            label.setFixedSize(150, 250)  # Tamaño fijo para cada QLabel
+            label.setGeometry(930 + (i % 4) * 160, 200 + (i // 4) * 120, 200, 100)
+            label.setStyleSheet("background-color: white; color: black; font-size: 14px; padding: 5px;")
+            label.setWordWrap(True)  # Permitir que el texto se ajuste en varias líneas
+            label.setFixedSize(150, 2500)  # Establecer un tamaño fijo para las etiquetas
             self.octantes_labels.append(label)
+    
 
         # Crear un layout horizontal para los octantes
         self.octantes_layout = QHBoxLayout()
@@ -114,9 +127,31 @@ class MyGraphic(QWidget):
         # Agregar el QScrollArea al layout principal
         self.layout.addWidget(self.scroll_area)
 
+
         # Conectar los botones a sus respectivas funciones
         self.btn_trazar.clicked.connect(self.on_trazar_clicked)
         self.btn_limpiar.clicked.connect(self.limpiar_escena)
+
+
+        # Crear QLabel para mostrar las coordenadas
+        self.parametro = QLabel(self)
+        self.parametro.setGeometry(930, 450, 440, 100)  # Ajustar la posición y el tamaño según sea necesario
+        self.parametro.setStyleSheet("background-color: white; color: black; font-size: 15px; padding-left: 25px;")
+        self.parametro.setWordWrap(True)  # Permite que el texto se divida en varias líneas
+
+        # Crear un QScrollArea para el QLabel
+        self.scroll_parametro = QScrollArea(self)
+        self.scroll_parametro.setWidgetResizable(True)
+        self.scroll_parametro.setGeometry(930, 450, 440, 200)  # Ajustar el tamaño y la posición según sea necesario
+        self.scroll_parametro.setStyleSheet("background-color: lightblue;")
+
+        # Establecer el QLabel en el QScrollArea
+        self.scroll_parametro.setWidget(self.parametro)
+
+        # Agregar el QScrollArea al layout principal
+        self.layout.addWidget(self.scroll_parametro)
+        self.parametro.setStyleSheet("background-color: white; color: black; font-size: 15px; padding-left: 25px;")
+        self.parametro.setWordWrap(True)  # Permite que el texto se divida en varias líneas
 
         # Dibujar los ejes
         self.dibujar_grafica()
@@ -159,7 +194,6 @@ class MyGraphic(QWidget):
             self.scene.addLine(margen, y, margen + ancho, y, grid_pen)
 
         # Agregar etiquetas a los ejes
-        # Agregar etiquetas a los ejes
         for i in range(-500, 600, 100):  # Rango de valores en los ejes
             # Etiquetas del eje X
             x_pos = inicio_y + i * (ancho / 1000)
@@ -175,7 +209,6 @@ class MyGraphic(QWidget):
             text_x.setDefaultTextColor(Qt.GlobalColor.black)
             text_y.setDefaultTextColor(Qt.GlobalColor.black)
 
-
     def on_trazar_clicked(self):
         try:
             xc = int(self.input_xc.text())
@@ -185,36 +218,45 @@ class MyGraphic(QWidget):
         except ValueError:
             self.octantes_labels[0].setText("Error: Ingresa valores válidos")
 
+
     def dibujar_circulo(self, xc, yc, r):
         # Convertir coordenadas de usuario a coordenadas de escena
         ancho, altura = 800, 500
         margen = 50
         centro_x = margen + ancho / 2
         centro_y = margen + altura / 2
-
+        puntos = []
+        parametro = []
+        octantes = [[] for _ in range(8)]
         # Inicializar variables
         x = 0
         y = r
         p = 1 - r  # Parámetro de decisión inicial
+        iteracion = 0
+        puntos.append((x, y))
+        parametro.append(y)
+        parametro.append(p)
 
-        # Listas para almacenar los puntos de cada octante
-        octantes = [[] for _ in range(8)]
-
-        # Dibujar los puntos iniciales y guardarlos en las listas
+        # Dibujar los puntos iniciales y guardarlos en la lista
+        # self.dibujar_puntos_circulo(xc, yc, x, p, centro_x, centro_y, octantes)
         self.dibujar_puntos_circulo(xc, yc, x, y, centro_x, centro_y, octantes)
-
         # Algoritmo de punto medio para el círculo
         while x < y:
+            # ] += 1
             x += 1
             if p < 0:
                 p += 2 * x + 1
             else:
                 y -= 1
                 p += 2 * (x - y) + 1
+                
             # Dibujar y guardar los puntos en cada iteración
+            parametro.append(p)
+            puntos.append((x, y))
             self.dibujar_puntos_circulo(xc, yc, x, y, centro_x, centro_y, octantes)
+            
 
-        # Mostrar los puntos en las etiquetas de los octantes
+        self.parametro.setText("\n" + "\n".join([f"PK: {p}, Puntos Siguientes: [ {x1}, {y} ]" for p, (x1, y) in zip(parametro, puntos)]))
         self.mostrar_puntos_octantes(octantes)
 
     def dibujar_puntos_circulo(self, xc, yc, x, y, centro_x, centro_y, octantes):
@@ -231,16 +273,37 @@ class MyGraphic(QWidget):
             (xc - y, yc - x),  # Octavo octante
         ]
 
-        # Agregar los puntos a las listas de octantes
+        # Agregar los puntos a la lista
         for i in range(8):
             octantes[i].append(puntos[i])
 
+        scale = min(ancho , altura) / 1000
+
         # Dibujar cada punto en la escena
-        pen = QPen(Qt.GlobalColor.blue, 2)
+        pen = QPen(Qt.GlobalColor.red, 1)
+        for px, py in puntos:
+            px_scene = centro_x + px * scale
+            py_scene = centro_y - py * scale
+            self.scene.addEllipse(px_scene, py_scene, 1, 1, pen)
+            # self.rellenar_circulo(xc, yc, puntos)
+        
+    def rellenar_circulo(self, xc, yc, puntos):
+        # Convertir coordenadas de usuario a coordenadas de escena
+        ancho, altura = 800, 500
+        margen = 50
+        centro_x = margen + ancho / 2
+        centro_y = margen + altura / 2
+
+        # Convertir el centro a coordenadas de escena
+        xc_scene = centro_x + xc * (ancho / 1000)
+        yc_scene = centro_y - yc * (altura / 1000)
+
+        # Dibujar líneas desde el centro a cada punto
+        pen = QPen(Qt.GlobalColor.red, 0.9, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap, Qt.PenJoinStyle.RoundJoin)  # Lápiz para las líneas
         for px, py in puntos:
             px_scene = centro_x + px * (ancho / 1000)
             py_scene = centro_y - py * (altura / 1000)
-            self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
+            self.scene.addLine(xc_scene, yc_scene, px_scene, py_scene, pen)
 
     def mostrar_puntos_octantes(self, octantes):
         # Mostrar los puntos en las etiquetas de los octantes
@@ -250,18 +313,20 @@ class MyGraphic(QWidget):
                 texto_puntos += f"({punto[0]}, {punto[1]})\n"
             self.octantes_labels[i].setText(texto_puntos)
 
+
     def limpiar_escena(self):
         self.scene.clear()
         self.dibujar_grafica()
+        self.parametro.clear()
+        self.input_radio.clear()
         for label in self.octantes_labels:
             label.clear()
         self.input_xc.clear()
         self.input_yc.clear()
-        self.input_radio.clear()
 
 
 if __name__ == "__main__":
     app = QApplication([])
     window = MyGraphic()
     window.show()
-    app.exec()
+    app.exec()   
