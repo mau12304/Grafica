@@ -223,7 +223,7 @@ class MyGraphic(QWidget):
         # Convertir coordenadas de usuario a coordenadas de escena
         ancho, altura = 800, 500
         margen = 50
-        centro_x = margen + ancho / 2
+        centro_x = margen + ancho / 2 
         centro_y = margen + altura / 2
         puntos = []
         parametro = []
@@ -284,14 +284,14 @@ class MyGraphic(QWidget):
         for px, py in puntos:
             px_scene = centro_x + px * scale
             py_scene = centro_y - py * scale
-            self.scene.addEllipse(px_scene, py_scene, 1, 1, pen)
-            # self.rellenar_circulo(xc, yc, puntos)
+            self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
+            self.rellenar_circulo(xc, yc, puntos)
         
     def rellenar_circulo(self, xc, yc, puntos):
         # Convertir coordenadas de usuario a coordenadas de escena
         ancho, altura = 800, 500
         margen = 50
-        centro_x = margen + ancho / 2
+        centro_x = margen + ancho / 2 
         centro_y = margen + altura / 2
 
         # Convertir el centro a coordenadas de escena

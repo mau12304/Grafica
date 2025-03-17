@@ -223,7 +223,7 @@ class MyGraphic(QWidget):
         # Convertir coordenadas de usuario a coordenadas de escena
         ancho, altura = 800 , 500 
         margen = 50
-        centro_x = margen + ancho / 2 
+        centro_x =  margen + ancho / 2 
         centro_y = margen + altura / 2 
 
         puntos = []
@@ -254,106 +254,55 @@ class MyGraphic(QWidget):
         self.parametro.setText("\n" + "\n".join([f"PK: {p}, Puntos Siguientes: [ {x}, {y} ]" for p, (x, y) in zip(parametro, puntos)]))
         self.mostrar_puntos_octantes(octantes)
 
-    def dibujar_puntos_circulo(self, xc, yc,puntos, centro_x, centro_y, octantes):
+    def dibujar_puntos_circulo(self, xc, yc, puntos, centro_x, centro_y, octantes):
         # Dibujar los 8 puntos de simetría del círculo
         ancho, altura = 800, 500
         puntos_rellenar = []
-        iteracion = 0
-        scale = min(ancho , altura) / 1000
-         
+        scale = min(ancho, altura) / 1000
+        
         # Dibujar cada punto en la escena
         pen = QPen(Qt.GlobalColor.red, 1)
-        while iteracion < 8:
-        #    Código modificado:
-            if iteracion == 0:
-                iteracion += 1
-                for x, y in puntos:
+        for x, y in puntos:
+            for iteracion in range(8):
+                if iteracion == 0:
                     px = x + xc
                     py = y + yc
-                    px_scene = centro_x + px * scale
-                    py_scene = centro_y - py * scale
-                    octantes[0].append((px, py))
-                    puntos_rellenar.append((px, py))
-                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
-            elif iteracion == 1:
-                iteracion += 1
-                for x, y in puntos:
-                    px = y + yc
-                    py = x + xc
-                    px_scene = centro_x + px * scale
-                    py_scene = centro_y - py * scale
-                    octantes[1].append((px, py))
-                    puntos_rellenar.append((px, py))
-                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
-            elif iteracion == 2:
-                iteracion += 1
-                for x, y in puntos:
-                    px = -y + yc
-                    py = x + xc
-                    px_scene = centro_x + px * scale
-                    py_scene = centro_y - py * scale
-                    octantes[2].append((px, py))
-                    puntos_rellenar.append((px, py))
-                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
-            elif iteracion == 3:
-                iteracion += 1
-                for x, y in puntos:
-                    px = x + xc
-                    py = -y + yc
-                    px_scene = centro_x + px * scale
-                    py_scene = centro_y - py * scale
-                    octantes[3].append((px, py))
-                    puntos_rellenar.append((px, py))
-                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
-            elif iteracion == 4: 
-                iteracion += 1   
-                for x, y in puntos:
-                    px = -y + yc
-                    py = -x + xc
-                    px_scene = centro_x + px * scale
-                    py_scene = centro_y - py * scale
-                    octantes[4].append((px, py))
-                    puntos_rellenar.append((px, py))
-                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
-            elif iteracion == 5:
-                iteracion += 1
-                for x, y in puntos:
-                    px = -x + xc
-                    py = -y + yc
-                    px_scene = centro_x + px * scale
-                    py_scene = centro_y - py * scale
-                    octantes[5].append((px, py))
-                    puntos_rellenar.append((px, py))
-                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
-            elif iteracion == 6:
-                iteracion += 1
-                for x, y in puntos:
+                elif iteracion == 1:
+                    px = y + xc
+                    py = x + yc
+                elif iteracion == 2:
+                    px = -y + xc
+                    py = x + yc
+                elif iteracion == 3:
                     px = -x + xc
                     py = y + yc
-                    px_scene = centro_x + px * scale
-                    py_scene = centro_y - py * scale
-                    octantes[6].append((px, py))
-                    puntos_rellenar.append((px, py))
-                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
-            elif iteracion == 7:
-                iteracion += 1
-                for x, y in puntos:
-                    px = y + yc
-                    py = -x + xc
-                    px_scene = centro_x + px * scale
-                    py_scene = centro_y - py * scale
-                    octantes[7].append((px, py))
-                    puntos_rellenar.append((px, py))
-                    self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
+                elif iteracion == 4: 
+                    px = -x + xc
+                    py = -y + yc
+                elif iteracion == 5:
+                    px = -y + xc
+                    py = -x + yc
+                elif iteracion == 6:
+                    px = y + xc
+                    py = -x + yc
+                elif iteracion == 7:
+                    px = x + xc
+                    py = -y + yc
+
+                # Calcular las posiciones en la escena
+                px_scene = centro_x + (px * scale)
+                py_scene = centro_y - (py * scale)  # Ajuste aquí para el eje Y
+                octantes[iteracion].append((px, py))
+                puntos_rellenar.append((px, py))
+                self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
 
         self.rellenar_circulo(xc, yc, puntos_rellenar)
-
         
     def rellenar_circulo(self, xc, yc, puntos):
         # Convertir coordenadas de usuario a coordenadas de escena
         ancho, altura = 800, 500
         margen = 50
-        centro_x = margen + ancho / 2
+        centro_x =  margen + ancho / 2
         centro_y = margen + altura / 2
 
         # Factor de escala uniforme basado en el mínimo entre ancho y altura
