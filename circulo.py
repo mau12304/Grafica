@@ -237,7 +237,7 @@ class MyGraphic(QWidget):
 
 
         # Algoritmo de punto medio para el círculo
-        while x <= y:
+        while x < y:
             x += 1
             if p < 0:
                 p += 2 * x + 1
@@ -261,7 +261,7 @@ class MyGraphic(QWidget):
         scale = min(ancho, altura) / 1000
         
         # Dibujar cada punto en la escena
-        pen = QPen(Qt.GlobalColor.red, 1)
+        pen = QPen(Qt.GlobalColor.red, 0.5)
         for x, y in puntos:
             for iteracion in range(8):
                 if iteracion == 0:
@@ -288,7 +288,7 @@ class MyGraphic(QWidget):
                 elif iteracion == 7:
                     px = x + xc
                     py = -y + yc
-
+                    
                 # Calcular las posiciones en la escena
                 px_scene = centro_x + (px * scale)
                 py_scene = centro_y - (py * scale)  # Ajuste aquí para el eje Y
@@ -309,15 +309,16 @@ class MyGraphic(QWidget):
         scale = min(ancho, altura) / 1000
 
         # Convertir el centro a coordenadas de escena
-        xc_scene = centro_x + xc * scale
-        yc_scene = centro_y - yc * scale
+        
 
         # Dibujar líneas desde el centro a cada punto
-        pen = QPen(Qt.GlobalColor.red, 0.9, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap, Qt.PenJoinStyle.RoundJoin)
+        pen = QPen(Qt.GlobalColor.red, 0.5, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap, Qt.PenJoinStyle.RoundJoin)
         for px, py in puntos:
-            px_scene = centro_x + px * scale
-            py_scene = centro_y - py * scale
-            self.scene.addLine(xc_scene, yc_scene, px_scene, py_scene, pen)
+            xc_scene = centro_x + px * scale
+            yc_scene = centro_y - py * scale
+            px_scene = centro_x + xc * scale
+            py_scene = centro_y - yc * scale
+            self.scene.addLine(px_scene, py_scene, xc_scene, yc_scene, pen)
 
 
     def mostrar_puntos_octantes(self, octantes):
