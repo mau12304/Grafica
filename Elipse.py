@@ -64,10 +64,39 @@ class MyGraphic(QWidget):
         self.input_yc.setGeometry(1080, 100, 60, 30)
 
         #Radio 
-        self.label_radio = QLabel("Radio", self)
+        self.label_radio = QLabel("Rx", self)
         self.label_radio.setGeometry(930, 140, 60, 30)
         self.input_radio = QLineEdit(self)
         self.input_radio.setGeometry(970, 140, 60, 30)
+        # Radio 2
+        self.label_radio2 = QLabel("Ry", self)
+        self.label_radio2.setGeometry(1040, 140, 60, 30)
+        self.input_radio2 = QLineEdit(self)
+        self.input_radio2.setGeometry(1080, 140, 60, 30)
+
+        self.parametro_lb = QLabel("Parametro", self)
+        self.parametro_lb.setGeometry(990, 425, 100, 30)
+        self.parametro_lb.setStyleSheet("background-color: white; color: black; font-size: 12px; padding: 10px")
+
+        self.primer_cuadrante = QLabel("Cuadrante 1\n ( X, Y )", self)
+        self.primer_cuadrante.setGeometry(1130, 420, 100, 40)
+        self.primer_cuadrante.setStyleSheet("background-color: white; color: black; font-size: 12px; padding: 2px")
+
+        self.segundo_cuadrante = QLabel("Cuadrante 2\n( X, Y )", self)
+        self.segundo_cuadrante.setGeometry(1020, 178,100,40)
+        self.segundo_cuadrante.setStyleSheet("background-color: white; color: black; font-size: 12px; padding: 2px")
+
+
+        self.tercer_cuadrante = QLabel("Cuadrante 3\n( X, Y )", self)
+        self.tercer_cuadrante.setGeometry(1200, 180,100,40)
+        self.tercer_cuadrante.setStyleSheet("background-color: white; color: black; font-size: 12px; padding: 2px")
+
+
+        self.cuarto_cuadrante = QLabel("Cuadrante 4\n( X, Y )", self)
+        self.cuarto_cuadrante.setGeometry(1380, 180,100,40)
+        self.cuarto_cuadrante.setStyleSheet("background-color: white; color: black; font-size: 12px; padding: 2px")
+
+
 
         # Establecer colores para los inputs
         self.input_xc.setStyleSheet("background-color: lightgreen; color: black;")
@@ -91,58 +120,65 @@ class MyGraphic(QWidget):
         self.btn_trazar.setStyleSheet("background-color: lightblue; color: lightblack; font-weight: bold;")
         self.btn_limpiar.setStyleSheet("background-color: lightcoral; color: lightblack; font-weight: bold;")
 
-        # Layout principal
-        self.layout = QVBoxLayout() 
-
-        # Crear 8 QLabel para los octantes
-        self.octantes_labels = []
-        for i in range(8):
-            label = QLabel(f"Octante {i + 1}", self)
-            label.setGeometry(930 + (i % 4) * 160, 200 + (i // 4) * 120, 200, 100)
-            label.setStyleSheet("background-color: white; color: black; font-size: 14px; padding: 5px;")
-            label.setWordWrap(True)  # Permitir que el texto se ajuste en varias líneas
-            label.setFixedSize(150, 2500)  # Establecer un tamaño fijo para las etiquetas
-            self.octantes_labels.append(label)
-    
-
-        # Crear un layout horizontal para los octantes
-        self.octantes_layout = QHBoxLayout()
-        for label in self.octantes_labels:
-            self.octantes_layout.addWidget(label)
-
-        # Agregar el layout de octantes al layout principal
-        # Crear un QScrollArea para los octantes
-        self.scroll_area = QScrollArea(self)
-        self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setGeometry(930, 200, 440, 240)  # Ajustar el tamaño y la posición según sea necesario
-        self.scroll_area.setStyleSheet("background-color: lightblue;")
-
-        # Crear un widget contenedor para los octantes y establecer el layout
-        self.octantes_widget = QWidget()
-        self.octantes_widget.setLayout(self.octantes_layout)
-
-        # Establecer el widget contenedor en el QScrollArea
-        self.scroll_area.setWidget(self.octantes_widget)
-
-        # Agregar el QScrollArea al layout principal
-        self.layout.addWidget(self.scroll_area)
-
-
-        # Conectar los botones a sus respectivas funciones
-        self.btn_trazar.clicked.connect(self.on_trazar_clicked)
-        self.btn_limpiar.clicked.connect(self.limpiar_escena)
-
+         # Layout principal
+        self.layout = QVBoxLayout()
 
         # Crear QLabel para mostrar las coordenadas
+        self.segundo_cuadrante = QLabel(f"X, Y \n", self)
+        self.segundo_cuadrante.setStyleSheet("background-color: white; color: black; font-size: 14px; padding: 15px;")
+        self.segundo_cuadrante.setWordWrap(True)  # Permite que el texto se divida en varias líneas
+        # Crear QLabel para mostrar las coordenadas
+        self.tercer_cuadrante = QLabel(f"X, Y \n",self)
+        self.tercer_cuadrante.setStyleSheet("background-color: white; color: black; font-size: 14px; padding: 15px;")
+        self.tercer_cuadrante.setWordWrap(True)  # Permite que el texto se divida en varias líneas
+        # Crear QLabel para mostrar las coordenadas
+        self.cuarto_cuadrante = QLabel(f"X, Y \n",self)
+        self.cuarto_cuadrante.setStyleSheet("background-color: white; color: black; font-size: 14px; padding: 15px;")
+        self.cuarto_cuadrante.setWordWrap(True)  # Permite que el texto se divida en varias líneas
+
+        # Crear QScrollArea para contener el QLabel y permitir desplazamiento
+        self.segundo_ca = QScrollArea()
+        self.segundo_ca.setWidgetResizable(True)  # Permite que el QLabel se adapte
+        self.segundo_ca.setWidget(self.segundo_cuadrante)  # Agregar QLabel al área de scroll
+        self.segundo_ca.setFixedSize(150, 200)  # Mantiene un tamaño fijo sin expandirse
+        # Agregar widgets al layout
+        self.layout.addWidget(self.segundo_ca)  # Agrega el QLabel dentro del ScrollArea
+        self.layout.setContentsMargins(980, 190, 0, 0)  # Posiciona el QLabel en la ventana
+        self.setLayout(self.layout)
+
+        self.tercer_ca = QScrollArea()
+        self.tercer_ca.setWidgetResizable(True)  
+        self.tercer_ca.setWidget(self.tercer_cuadrante)  
+        self.tercer_ca.setFixedSize(150, 200)  
+
+        self.layout.addWidget(self.tercer_ca)  
+
+        self.cuarto_ca = QScrollArea()
+        self.cuarto_ca.setWidgetResizable(True)  
+        self.cuarto_ca.setWidget(self.cuarto_cuadrante)  
+        self.cuarto_ca.setFixedSize(150, 200)  
+
+        self.layout.addWidget(self.cuarto_ca)  
+
+        # Layout horizontal para las coordenadas
+        self.horizontal_layout = QHBoxLayout()
+        self.horizontal_layout.addWidget(self.segundo_ca)
+        self.horizontal_layout.addWidget(self.tercer_ca)
+        self.horizontal_layout.addWidget(self.cuarto_ca)
+
+        # Agregar el layout horizontal al layout principal
+        self.layout.addLayout(self.horizontal_layout)
+         # Crear QLabel para mostrar las coordenadas
         self.parametro = QLabel(self)
-        self.parametro.setGeometry(930, 450, 440, 100)  # Ajustar la posición y el tamaño según sea necesario
+        self.parametro.setGeometry(980, 510, 300, 50)  # Ajustar la posición y el tamaño según sea necesario
         self.parametro.setStyleSheet("background-color: white; color: black; font-size: 15px; padding-left: 25px;")
         self.parametro.setWordWrap(True)  # Permite que el texto se divida en varias líneas
 
         # Crear un QScrollArea para el QLabel
         self.scroll_parametro = QScrollArea(self)
         self.scroll_parametro.setWidgetResizable(True)
-        self.scroll_parametro.setGeometry(930, 450, 440, 200)  # Ajustar el tamaño y la posición según sea necesario
+        self.scroll_parametro.setGeometry(930, 190, 400, 300)  # Ajustar posición y tamaño
+        self.scroll_parametro.setFixedSize(400, 300)  # Establecer un tamaño fijo para el QScrollArea
         self.scroll_parametro.setStyleSheet("background-color: lightblue;")
 
         # Establecer el QLabel en el QScrollArea
@@ -152,11 +188,13 @@ class MyGraphic(QWidget):
         self.layout.addWidget(self.scroll_parametro)
         self.parametro.setStyleSheet("background-color: white; color: black; font-size: 15px; padding-left: 25px;")
         self.parametro.setWordWrap(True)  # Permite que el texto se divida en varias líneas
+        self.btn_trazar.clicked.connect(self.on_trazar_clicked)
+        self.btn_limpiar.clicked.connect(self.limpiar_escena)
 
-        # Dibujar los ejes
         self.dibujar_grafica()
 
     def dibujar_grafica(self):
+        
         self.scene.clear()  # Limpia la escena antes de dibujar
 
         # Definir dimensiones del gráfico
@@ -172,7 +210,7 @@ class MyGraphic(QWidget):
 
         # Dibujar eje X
         inicio_x, fin_x = 50, 850  # Posición inicial y final en X
-        altura_x = 300  # Altura en la que se traza el eje X
+        altura_x = 300  # Altura qen la que se traza el eje X
         self.scene.addLine(inicio_x, altura_x, fin_x, altura_x, axis_pen)
 
         # Dibujar eje Y
@@ -213,132 +251,149 @@ class MyGraphic(QWidget):
         try:
             xc = int(self.input_xc.text())
             yc = int(self.input_yc.text())
-            r = int(self.input_radio.text())
-            self.dibujar_circulo(xc, yc, r)
+            r1 = int(self.input_radio.text())
+            r2 = int(self.input_radio2.text())
+            self.dibujar_elipse(xc, yc, r1, r2)
         except ValueError:
-            self.octantes_labels[0].setText("Error: Ingresa valores válidos")
+            pass
+        
+    def dibujar_elipse(self, xc, yc, rx, ry):
+        Xk_1 = []
+        Yk_1 = []
+        Parametro = []
+        regiones = []
 
-
-    def dibujar_circulo(self, xc, yc, r):
-        # Convertir coordenadas de usuario a coordenadas de escena
-        ancho, altura = 860 , 500 
-        margen = 50
-        centro_x =  margen + ancho / 2 
-        centro_y = margen + altura / 2 
-
-        puntos = []
-        parametro = []
-        octantes = [[] for _ in range(8)]
-        # Inicializar variables
+        # Región 1: Primera parte de la elipse
         x = 0
-        y = r
-        p = 1 - r  # Parámetro de decisión inicial
-        parametro.append(p)
-
-
-        # Algoritmo de punto medio para el círculo
-        while x < y:
-            x += 1
-            if p < 0:
-                p += 2 * x + 1
+        y = ry        
+        Pk = (ry**2) - (rx**2) * ry + 0.25 * (rx**2)  # Parámetro inicial
+        
+        i = 0
+        while 2*(ry**2) * x <= 2*(rx**2) * y:
+            i +=1
+            if Pk < 0:
+                x += 1
+                Xk_1.append(x)
+                Yk_1.append(y)
+                Parametro.append(f"R1 {round(Pk,2)}")
+                regiones.append(f"R1 [ {x + xc}, {y + yc}]")
+                Pk += 2 * (ry**2) * x + (ry**2)  
             else:
+                x +=1
                 y -= 1
-                p += 2 * x + 1 - 2 * y
+                Xk_1.append(x)
+                Yk_1.append(y)
+                Parametro.append(f"R1 {round(Pk,2)}")
+                regiones.append(f"R1 [ {x + xc}, {y + yc}]")
+                Pk += 2 * (ry**2) * x - 2 * (rx**2) * y + (ry**2)
+    
+       
+        # Región 2: Segunda parte de la elipse
+        P2k = (ry**2) * ((x + 0.5)**2) + (rx**2) * ((y - 1)**2) - (rx**2) * (ry**2)
 
-            # Dibujar y guardar los puntos en cada iteración
-            parametro.append(p)
-            puntos.append((x, y))
+        while y > 0:  # Cambiar la condición para detenerse cuando y == 0
+            if P2k > 0:
+                y -= 1
+                Xk_1.append(x)
+                Yk_1.append(y)
+                Parametro.append(f"R2 {round(P2k,2)}")
+                regiones.append(f"R2 [ {x + xc}, {y + yc}]")
+                P2k = P2k - 2 * (rx**2) * y + (rx**2)
+            else:
+                x += 1
+                y -= 1
+                Xk_1.append(x)
+                Yk_1.append(y)
+                Parametro.append(f"R2 {round(P2k,2)}")
+                regiones.append(f"R2 [ {x + xc}, {y + yc}]")
+                P2k += 2 * (ry**2) * x - 2 * (rx**2) * y + (rx**2)
+                 # Mostrar puntos calculados
             
+            
+        self.parametro.setText(
+                "\n" + "\n".join([f"PK: {p}, : {region}" for p, region in zip(Parametro, regiones)]))
+        self.dibujar_puntos_circulo(xc, yc, Xk_1, Yk_1)
 
-        self.dibujar_puntos_circulo(xc, yc,puntos, centro_x, centro_y, octantes)
-        self.parametro.setText("\n" + "\n".join([f"PK: {p}, Puntos Siguientes: [ {x}, {y} ]" for p, (x, y) in zip(parametro, puntos)]))
-        self.mostrar_puntos_octantes(octantes)
-
-    def dibujar_puntos_circulo(self, xc, yc, puntos, centro_x, centro_y, octantes):
+    def dibujar_puntos_circulo(self, xc, yc, xk, yk):
         # Dibujar los 8 puntos de simetría del círculo
         ancho, altura = 800, 500
-        puntos_rellenar = []
-        scale = min(ancho, altura) / 1000
+        margen = 50
+        Xk_1 = []
+        Yk_1 = []
+        centro_x =  margen + ancho / 2 
+        centro_y = margen + altura / 2 
+        # puntos_rellenar = []
+        # scale = min(ancho, altura) / 1000
         
         # Dibujar cada punto en la escena
         pen = QPen(Qt.GlobalColor.red, 0.5)
-        for x, y in puntos:
-            for iteracion in range(8):
+        for x, y in zip(xk, yk):
+            for iteracion in range(4):
                 if iteracion == 0:
-                    px = x + xc
-                    py = y + yc
+                    px = xc + x
+                    py = yc + y
                 elif iteracion == 1:
-                    px = y + xc
-                    py = x + yc
+                    px = xc + x
+                    py = yc - y
+                    self.segundo_cuadrante.setText(
+                        self.segundo_cuadrante.text() + f"\n{px}, {py}"
+                    )
                 elif iteracion == 2:
-                    px = -y + xc
-                    py = x + yc
+                    px = xc - x
+                    py = yc - y
+                    self.tercer_cuadrante.setText(
+                        self.tercer_cuadrante.text() + f"\n{px}, {py}"
+                    )
                 elif iteracion == 3:
-                    px = -x + xc
-                    py = y + yc
-                elif iteracion == 4: 
-                    px = -x + xc
-                    py = -y + yc
-                elif iteracion == 5:
-                    px = -y + xc
-                    py = -x + yc
-                elif iteracion == 6:
-                    px = y + xc
-                    py = -x + yc
-                elif iteracion == 7:
-                    px = x + xc
-                    py = -y + yc
+                    px = xc - x
+                    py = yc + y
+                    self.cuarto_cuadrante.setText(
+                        self.cuarto_cuadrante.text() + f"\n{px}, {py}"
+                    )
                     
                 # Calcular las posiciones en la escena
-                px_scene = centro_x + (px * scale)
-                py_scene = centro_y - (py * scale)  # Ajuste aquí para el eje Y
-                octantes[iteracion].append((px, py))
-                puntos_rellenar.append((px, py))
+                px_scene = centro_x + (px * ancho/ 1000)
+                py_scene = centro_y - (py * altura / 1000)  # Ajuste aquí para el eje Y
                 self.scene.addEllipse(px_scene, py_scene, 2, 2, pen)
+                Xk_1.append(px)
+                Yk_1.append(py)
+                
+        self.rellenar_elipse(xc, yc, Xk_1, Yk_1)
+    
 
-        self.rellenar_circulo(xc, yc, puntos_rellenar)
-        
-    def rellenar_circulo(self, xc, yc, puntos):
+    def rellenar_elipse(self, xc, yc, x, y):
         # Convertir coordenadas de usuario a coordenadas de escena
-        ancho, altura = 860, 500
+        ancho, altura = 800, 500
         margen = 50
         centro_x =  margen + ancho / 2
         centro_y = margen + altura / 2
-
-        # Factor de escala uniforme basado en el mínimo entre ancho y altura
-        scale = min(ancho, altura) / 1000
 
         # Convertir el centro a coordenadas de escena
         
 
         # Dibujar líneas desde el centro a cada punto
         pen = QPen(Qt.GlobalColor.red, 0.5, Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap, Qt.PenJoinStyle.RoundJoin)
-        for px, py in puntos:
-            xc_scene = centro_x + px * scale
-            yc_scene = centro_y - py * scale
-            px_scene = centro_x + xc * scale
-            py_scene = centro_y - yc * scale
+        for px, py in zip(x, y):
+            xc_scene = centro_x + (px * ancho/ 1000)
+            yc_scene = centro_y - (py * altura / 1000)
+            px_scene = centro_x + (xc * ancho/1000)
+            py_scene = centro_y - (yc * altura/1000)
             self.scene.addLine(px_scene, py_scene, xc_scene, yc_scene, pen)
-
-
-    def mostrar_puntos_octantes(self, octantes):
-        # Mostrar los puntos en las etiquetas de los octantes
-        for i in range(8):
-            texto_puntos = f"Octante {i + 1}:\n"
-            for punto in octantes[i]:
-                texto_puntos += f"({punto[0]}, {punto[1]})\n"
-            self.octantes_labels[i].setText(texto_puntos)
-
 
     def limpiar_escena(self):
         self.scene.clear()
         self.dibujar_grafica()
         self.parametro.clear()
         self.input_radio.clear()
-        for label in self.octantes_labels:
-            label.clear()
         self.input_xc.clear()
         self.input_yc.clear()
+        self.input_radio2.clear()
+        self.segundo_cuadrante.clear()
+        self.tercer_cuadrante.clear()
+        self.cuarto_cuadrante.clear()
+
+
+
 
 
 if __name__ == "__main__":
